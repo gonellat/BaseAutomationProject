@@ -1,0 +1,35 @@
+There are various options to run a test:
+1) Right click on CucumberRunnerTest -> Run as TestNg.
+Notes: 
+- Add the tags you want to run in the runner
+- The default properties are REP2, Not Headless, 1 Scenario at a time, CHROME.  
+- If you wish to change these defaults set them in run.properties.
+- if you wish to run more than one test in parallel then change the runner to parallel = true.
+    Caveats to this:
+    - It is limited to the number of threads as set in maxLocalInstances
+    - If you have an example table it could try to run all examples at the same time (obviously depends on available threads).
+    - Be careful in parallel as users can only be logged in once. (if you try to log in again it will log the first instance out)
+
+2) Right click on testng.xml -> Run as TestNg.
+- This method is really only to be used if suites have been set up.
+- Each suite is sequential but tests are run in parallel with in a suite (See Suite tag - parallel="false")
+- Number of threads is defined by the threadCount in the xml
+- Similar caveates to running in parallel as above.
+- Properties as per defaults or run.properties.
+- Each suite calls its own TestRunner e.g. XmlCucumberRunnerSuiteA.java (The @DataProvider parallel variable is overridden by the testng test element parallel="methods")
+ie. - Parallel scenarios across features (controlled by testng's - Suite Parallel attribute) 
+      Parallel methods in a testng "test" - Each test is executed in its own thread
+      (if it was set to "parallel=class" all test methods within a class will run sequentially in one thread but different classes will execute concurrently. Our class is a runner though :-)
+
+3) Maven
+Notes:
+- There are 2 Maven run configurations
+- a) 02. MavenCucumberRunnerLocal - This is similar to running as test ng but the properties are defined in the goal.  
+     - This is useful for Jenkins which is run as a command line.
+- b) 03. MavenXMLRunner - This is similar to running as testng.xml for suites.  All other properties need to be defined in the goal
+
+Results:
+-Logs are stored in target/logs - with the name of the scenario + timestamp
+-Reports are stored in target/NewStyleReports.
+-If running as Maven there are additional reports in target\cucumber-reports.  Note the .json file is also stored here for importing into Xray
+-Excel Reports are in target\reports\reportname_timestamp\

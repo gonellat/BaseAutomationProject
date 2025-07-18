@@ -1,0 +1,85 @@
+pipeline {
+    agent {
+        node {
+            label 'T009B_linux_build'
+        }
+    }
+    environment {
+        SONAR_HOME = tool 'SonarScanner'
+        MAVEN_HOME = tool 'maven-3.8.1'
+        SONAR_SCANNER = "$SONAR_HOME/bin/sonar-scanner"
+        ROLE = "testing"
+        SERVICE="systemtestautomation"
+        https_proxy = "proxy.platform.uk.local:3128"
+        no_proxy = "platform.uk.local"
+    }
+    options {
+      gitLabConnection('GitLab')
+    }
+    stages {
+        stage('Maven Compile'){
+          environment {
+            JAVA_HOME = tool "jdk-17.0.5"
+          }
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'Artifactory', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USER')]) {
+              sh """
+                $MAVEN_HOME/bin/mvn \
+                  -s settings.xml \
+                  -f pom.xml \
+                  test-compile \
+                  -Dmaven.wagon.http.ssl.insecure=true ##TODO: Fix and remove
+              """
+            }
+          }
+        }
+        //TODO: Remove once SonarQube is v9.9+
+        stage("TEMP: Configure SonarQube Project"){
+          steps {
+            withCredentials([string(credentialsId: 'SonarQubeAdmin', variable: 'SQ_PASS')]) {
+              sh "curl -Ss -X POST -u ${SQ_PASS}: 'https://sonarqube.platform.uk.local/api/projects/create?project=ABC-${ROLE}-${SERVICE}&name=ABC/${ROLE}/${SERVICE}'" 
+              sh "curl -Ss -X POST -u ${SQ_PASS}: 'https://sonarqube.platform.uk.local/api/project_branches/rename?project=ABC-${ROLE}-${SERVICE}&name=main'"
+              sh "curl -Ss -X POST -u ${SQ_PASS}: 'https://sonarqube.platform.uk.local/api/project_tags/set?project=ABC-${ROLE}-${SERVICE}&tags=abc,${ROLE},${SERVICE}'"
+            }
+          }
+        }
+        stage("Sonar scan"){
+            steps {
+                withSonarQubeEnv("Sonarqube"){
+                    
+                    sh """
+                        $SONAR_SCANNER \
+                          -Dsonar.projectKey=ABC-${ROLE}-${SERVICE} \
+                          -Dsonar.projectName=ABC/${ROLE}/${SERVICE}
+                    """
+                    //sh "curl -Ss -X POST -u ${SONAR_AUTH_TOKEN}: '${SONAR_HOST_URL}/api/project_tags/set?project=ABC-${ROLE}-${SERVICE}&tags=abc,${ROLE},${SERVICE}'" //TODO: Uncomment once Jenkins has "administer" rights on project
+                }
+            }
+        }
+        //Optional stage to check on SonarQube result
+        stage("Wait for Sonar Scan Result"){
+            steps {
+                script {
+                    def gate
+                    retry(10){
+                        timeout(unit: 'SECONDS', time: 10){
+                            gate = waitForQualityGate()
+                        }
+                    }
+                    if(gate.status == "OK"){
+                      updateGitlabCommitStatus name: 'qa', state: 'success'
+                    }
+                    if(gate.status != "OK"){
+                        error "Sonar quality gate failed with status: ${gate.status}"
+                        updateGitlabCommitStatus name: 'qa', state: 'failed'
+                    }
+                }
+            }
+        }
+     }
+  post {
+    always {
+      cleanWs()
+    }
+  }
+}
