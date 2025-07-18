@@ -205,7 +205,7 @@ public class BasePageClass {
             waitForElementToBeClickable(strElement).click();
             buttonClickedOK = true;
          } catch (ElementClickInterceptedException e) {
-            TestLoggerHolder.getLogger().info("Wait due to Click Intercepted Exception, attempt : " + attempts);
+            TestLoggerHolder.getLogger().info("{} {}", "Wait due to Click Intercepted Exception, attempt : ", attempts);
             sleep(1);
             sendKeys(strElement, Keys.TAB);
          } catch (StaleElementReferenceException e) {
@@ -1066,7 +1066,7 @@ public class BasePageClass {
             TestLoggerHolder.getLogger().info("Correct Page found");
             bFound = true;
          } else {
-            TestLoggerHolder.getLogger().info("Correct Page not found, waiting...iteration:" + attempts);
+            TestLoggerHolder.getLogger().info("{} {}", "Correct Page not found, waiting...iteration:", attempts);
             sleep(1);
             attempts++;
          }

@@ -104,7 +104,7 @@ public class TestReport {
 
       createExcelWorkbook();
 
-      TestLoggerHolder.getLogger().info("Extent Report Initialized for suite: " + suiteName);
+      TestLoggerHolder.getLogger().info("{} {}", "Extent Report Initialized for suite: ", suiteName);
    }
 
    /**

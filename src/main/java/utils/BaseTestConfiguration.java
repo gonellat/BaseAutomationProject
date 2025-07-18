@@ -156,7 +156,7 @@ public class BaseTestConfiguration {
    private static void getTagValueFromMavenRunner(Properties properties) {
       String mavenTagValue = System.getProperty(IConstants.CUCUMBER_FILTER_TAGS);
 
-      TestLoggerHolder.getLogger().info("Checking Cucumber filter tags from Maven: " + mavenTagValue);
+      TestLoggerHolder.getLogger().info("{} {}", "Checking Cucumber filter tags from Maven: ", mavenTagValue);
 
       if (mavenTagValue != null) {
          setTagValueAndLog(mavenTagValue, "Tag Value Supplied via Maven: ");

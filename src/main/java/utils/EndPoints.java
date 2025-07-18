@@ -48,7 +48,7 @@ public class EndPoints {
       TestLoggerHolder.getLogger().info(LINE_BREAK);
 
       Response response = null;
-      TestLoggerHolder.getLogger().info("uriName: " + uri);
+      TestLoggerHolder.getLogger().info("{} {}", "uriName: ", uri);
 
       try {
          response = given().relaxedHTTPSValidation().header("Content-Type", ContentType.XML).get(uri);

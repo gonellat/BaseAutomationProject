@@ -162,7 +162,7 @@ public class DateUtils {
       String modifiedZonedDateTimeString = null;
 
       dateToModify = dateToModify.toUpperCase();
-      TestLoggerHolder.getLogger().info("The original date to modify is:" + dateToModify);
+      TestLoggerHolder.getLogger().info("{} {}", "The original date to modify is:", dateToModify);
 
       // If the string contains + or - add or subtract the right days/months or years
       // otherwise it is just "TODAY" or a given
@@ -280,11 +280,11 @@ public class DateUtils {
 
       // Extract base date (removes modifications like "+1Month"
       String baseDate = extractBaseDate(dateToModify);
-      TestLoggerHolder.getLogger().info("Extracted Base Date for parsing: " + baseDate);
+      TestLoggerHolder.getLogger().info("{} {}", "Extracted Base Date for parsing: ", baseDate);
 
       // Append default time if not present
       String dateTimeWithZone = baseDate + "T00:00:00Z";
-      TestLoggerHolder.getLogger().info("Formatted Date with Time: " + dateTimeWithZone);
+      TestLoggerHolder.getLogger().info("{} {}", "Formatted Date with Time: ", dateTimeWithZone);
 
       // Identify format and create appropriate formatter
       DateTimeFormatter formatter;
@@ -310,7 +310,7 @@ public class DateUtils {
    private static String extractModifyAmount(String dateToModify) {
       String modifyAmount = dateToModify.replace(DateTimeFormatConstants.TODAY, "")
             .replace(extractBaseDate(dateToModify), "").trim();
-      TestLoggerHolder.getLogger().info("modifyAmount:" + modifyAmount);
+      TestLoggerHolder.getLogger().info("{} {}", "modifyAmount:", modifyAmount);
       return modifyAmount;
    }
 
@@ -353,7 +353,7 @@ public class DateUtils {
       // Normalize input to lowercase for case insensitive handling
       String normalized = modifyByAmount.toLowerCase();
 
-      TestLoggerHolder.getLogger().info("Parsing modification value from: " + normalized + " for type: " + type);
+      TestLoggerHolder.getLogger().info("{} {}", "Parsing modification value from: ", normalized + " for type: " + type);
 
       // ensure type is also handled case-insensitively
       String typeLower = type.toLowerCase();
@@ -364,7 +364,7 @@ public class DateUtils {
 
       if (matcher.find()) {
          int value = Integer.parseInt(matcher.group(1)); // Extract and convert to integer
-         TestLoggerHolder.getLogger().info("Parsed value:" + value + " for type:" + type);
+         TestLoggerHolder.getLogger().info("{} {}", "Parsed value:", value + " for type:" + type);
          return value;
       } else {
          TestLoggerHolder.getLogger()
@@ -404,9 +404,9 @@ public class DateUtils {
       ZonedDateTime actual = ZonedDateTime.parse(actualDateTime, formatter);
 
       long diff = ChronoUnit.MINUTES.between(actual, expected);
-      TestLoggerHolder.getLogger().info("Time diff" + diff);
+      TestLoggerHolder.getLogger().info("{} {}", "Time diff", diff);
       boolean rtnValue = diff <= tolerance;
-      TestLoggerHolder.getLogger().info("rtnValue= " + rtnValue);
+      TestLoggerHolder.getLogger().info("{} {}", "rtnValue= ", rtnValue);
       return (rtnValue);
    }
 
@@ -452,7 +452,7 @@ public class DateUtils {
    public static String getCurrentYear() {
       LocalDate currentDate = LocalDate.now();
       String currentYear = currentDate.format(DateTimeFormatter.ofPattern("yyyy"));
-      TestLoggerHolder.getLogger().info("currentYear:" + currentYear);
+      TestLoggerHolder.getLogger().info("{} {}", "currentYear:", currentYear);
       return currentYear;
    }
 
@@ -465,7 +465,7 @@ public class DateUtils {
       String currentDateTime = DateUtils.adjustDate(DateTimeFormatConstants.TODAY,
             DateTimeFormatConstants.DDMMYYYYHHMM);
       String currentTime = currentDateTime.substring(currentDateTime.indexOf(" ") + 1);
-      TestLoggerHolder.getLogger().info("currentTime:" + currentTime);
+      TestLoggerHolder.getLogger().info("{} {}", "currentTime:", currentTime);
       return currentTime;
    }
 

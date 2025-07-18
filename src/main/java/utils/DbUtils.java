@@ -61,7 +61,7 @@ public class DbUtils {
    public static String getSql(String fileName) throws IOException {
       String filePath = fileName;
       String sqlContent = Files.readString(Paths.get(filePath));
-      TestLoggerHolder.getLogger().info("sqlContent: " + sqlContent);
+      TestLoggerHolder.getLogger().info("{} {}", "sqlContent: ", sqlContent);
       return sqlContent;
    }
 

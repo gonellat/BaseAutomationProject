@@ -112,7 +112,7 @@ public class DriverManager {
       try {
          InetAddress address = InetAddress.getByName("google.com");
          if (address != null) {
-            TestLoggerHolder.getLogger().info("✅ Internet detected. Downloading driver for: " + browserName);
+            TestLoggerHolder.getLogger().info("{} {}", "✅ Internet detected. Downloading driver for: ", browserName);
             String path = DriverDownloader.download(browserName.toLowerCase());
             System.setProperty(systemPropertyKey, path);
             return;
@@ -161,7 +161,7 @@ public class DriverManager {
       }
 
       driverThreadLocal.set(webDriver);
-      TestLoggerHolder.getLogger().info("Webdriver initialised for thread:" + Thread.currentThread());
+      TestLoggerHolder.getLogger().info("{} {}", "Webdriver initialised for thread:", Thread.currentThread());
    }
 
    /**

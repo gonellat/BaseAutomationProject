@@ -521,11 +521,11 @@ public class XMLDataHandler {
          Validator validator = schema.newValidator();
          validator.validate(new StreamSource(new File(xmlPath)));
       } catch (IOException e) {
-         TestLoggerHolder.getLogger().info("Exception: " + e.getMessage());
+         TestLoggerHolder.getLogger().info("{} {}", "Exception: ", e.getMessage());
          setXmlError(e.getMessage());
          xmlIsValid = false;
       } catch (SAXException e1) {
-         TestLoggerHolder.getLogger().info("SAX Exception: " + e1.getMessage());
+         TestLoggerHolder.getLogger().info("{} {}", "SAX Exception: ", e1.getMessage());
          setXmlError(e1.getMessage());
          xmlIsValid = false;
       }
@@ -540,7 +540,7 @@ public class XMLDataHandler {
     * @throws IOException Exception if the file cannot be read
     */
    public static List<String> getFileFromFileOfFiles(String pathOfFileofFiles) throws IOException {
-      TestLoggerHolder.getLogger().info("PathOfFileOfFiles=" + pathOfFileofFiles);
+      TestLoggerHolder.getLogger().info("{} {}", "PathOfFileOfFiles=", pathOfFileofFiles);
       File file = new File(pathOfFileofFiles);
       Document xmlDoc = Jsoup.parse(file, UTF8, "", Parser.xmlParser());
       List<String> dataFileList = new ArrayList<>();

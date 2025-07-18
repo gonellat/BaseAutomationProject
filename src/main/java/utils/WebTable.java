@@ -161,16 +161,16 @@ public class WebTable extends BasePageClass {
     */
    private void getAllPageData(String row) {
       List<String> pageOptions = getSelectList(SELECT_PAGE);
-      TestLoggerHolder.getLogger().info("pages:" + pageOptions);
+      TestLoggerHolder.getLogger().info("{} {}", "pages:", pageOptions);
       for (int x = 0; x < pageOptions.size(); x++) {
          // Wait for the table to be present
          waitForElementToBeClickable(SELECT_PAGE);
          wbTable = waitForVisibilityOfElementLocatedBy(strTableLocator);
 
-         TestLoggerHolder.getLogger().info("Reading page " + x);
+         TestLoggerHolder.getLogger().info("{} {}", "Reading page ", x);
          // Get the table row count
          int currentPageRowCount = wbTable.findElements(By.tagName(IConstants.TR)).size();
-         TestLoggerHolder.getLogger().info("Current Page RowCount=" + currentPageRowCount);
+         TestLoggerHolder.getLogger().info("{} {}", "Current Page RowCount=", currentPageRowCount);
          readPageData(row);
          if (x + 1 != pageOptions.size()) {
             selectByVisibleText(SELECT_PAGE, pageOptions.get(x + 1));

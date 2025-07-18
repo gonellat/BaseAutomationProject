@@ -76,7 +76,7 @@ public class ListenerPlugin implements ConcurrentEventListener, io.cucumber.plug
 
       Logger scenarioLogger = DynamicRoutingUtil.createLoggerForTest(testName, featureName);
       TestLoggerHolder.setLogger(scenarioLogger);
-      TestLoggerHolder.getLogger().info("Logs will go into target/logs/" + featureNameWithoutExtension);
+      TestLoggerHolder.getLogger().info("{} {}", "Logs will go into target/logs/", featureNameWithoutExtension);
       TestLoggerHolder.getLogger().info(LINE_BREAK);
       TestLoggerHolder.getLogger().info(LINE_BREAK);
       scenarioLogger.info("▶ Starting: " + uniqueName);
@@ -131,7 +131,7 @@ public class ListenerPlugin implements ConcurrentEventListener, io.cucumber.plug
       TestReport.closeThreadLocalCollections();
       TestLoggerHolder.getLogger().info(LINE_BREAK);
       TestLoggerHolder.getLogger().info(LINE_BREAK);
-      TestLoggerHolder.getLogger().info("⏹ Finished: " + testName);
+      TestLoggerHolder.getLogger().info("{} {}", "⏹ Finished: ", testName);
       TestLoggerHolder.getLogger().info(LINE_BREAK);
       TestLoggerHolder.getLogger().info(LINE_BREAK);
       TestLoggerHolder.clear();
@@ -144,7 +144,7 @@ public class ListenerPlugin implements ConcurrentEventListener, io.cucumber.plug
       if (event.getTestStep() instanceof PickleStepTestStep step) {
          setStepKeyword(step.getStep().getKeyword());
          setStepName(step.getStep().getText());
-         TestLoggerHolder.getLogger().info("🟢 Step: " + stepKeyword + stepName);
+         TestLoggerHolder.getLogger().info("{} {}", "🟢 Step: ", stepKeyword + stepName);
       }
    };
 

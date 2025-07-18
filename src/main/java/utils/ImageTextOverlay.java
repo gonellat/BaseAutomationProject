@@ -55,7 +55,7 @@ public class ImageTextOverlay {
       g2d.dispose();
 
       ImageIO.write(modifiedImage, "jpg", new File(outputPath));
-      TestLoggerHolder.getLogger().info("Image modified with text overlay and saved to " + outputPath);
+      TestLoggerHolder.getLogger().info("{} {}", "Image modified with text overlay and saved to ", outputPath);
    }
 
 }

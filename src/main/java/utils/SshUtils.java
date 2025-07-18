@@ -215,7 +215,7 @@ public class SshUtils {
          try {
             Thread.sleep(1000);
          } catch (InterruptedException ex) {
-            TestLoggerHolder.getLogger().info("Error: " + ex);
+            TestLoggerHolder.getLogger().info("{} {}", "Error: ", ex);
          }
       }
    }
@@ -242,7 +242,7 @@ public class SshUtils {
             output.append(chunk);
 
             if (output.toString().contains(expectedMessage)) {
-               TestLoggerHolder.getLogger().info("Expected Message:- " + expectedMessage);
+               TestLoggerHolder.getLogger().info("{} {}", "Expected Message:- ", expectedMessage);
                return;
             }
          }

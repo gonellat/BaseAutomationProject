@@ -168,7 +168,7 @@ public class CSVDataHandler {
       File dir = new File(directory);
 
       if (!dir.exists() || !dir.isDirectory()) {
-         TestLoggerHolder.getLogger().info("Downloads directory not found at: " + directory);
+         TestLoggerHolder.getLogger().info("{} {}", "Downloads directory not found at: ", directory);
          return "";
       }
 

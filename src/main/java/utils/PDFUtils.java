@@ -59,7 +59,7 @@ public class PDFUtils {
       BufferedInputStream bis = new BufferedInputStream(is);
       PDDocument doc = PDDocument.load(bis);
       int pages = -doc.getNumberOfPages();
-      TestLoggerHolder.getLogger().info("Number of PDF Pages = " + pages);
+      TestLoggerHolder.getLogger().info("{} {}", "Number of PDF Pages = ", pages);
       PDFTextStripper strip = new PDFTextStripper();
       strip.setStartPage(1);
       strip.setEndPage(pages);
