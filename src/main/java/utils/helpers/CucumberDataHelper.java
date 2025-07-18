@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class contains all additional properties that cannot be stored elsewhere and are used throughout the framework
+ * This class contains all additional properties that cannot be stored elsewhere
+ * and are used throughout the framework
  */
 public class CucumberDataHelper {
 
@@ -22,8 +23,6 @@ public class CucumberDataHelper {
    private static String initialChannel;
    private static List<String> loggedInUserOrder = new ArrayList<>();
    private static String outputFilename = "";
-
-
 
    private static Map<String, String> urns = new HashMap<>();
 
@@ -53,7 +52,7 @@ public class CucumberDataHelper {
    public static String getUpdateUserLoggedOn() {
       return updateUserLoggedOn;
    }
-   
+
    /**
     * Setter for the updateUserLoggedOn value
     * 
@@ -91,26 +90,21 @@ public class CucumberDataHelper {
       loggedInUserOrder.clear();
    }
 
-   
-
-  
    /**
     * Setter for the logged in user value
     * 
     * @param user list of users
     */
-   public static void setLoggedInUserOrder(String user)
-   {
+   public static void setLoggedInUserOrder(String user) {
       loggedInUserOrder.add(user);
    }
-   
+
    /**
     * Getter for the Logged in users value
     * 
     * @return The list of users
     */
-   public static List<String> getLoggedInUserOrder()
-   {
+   public static List<String> getLoggedInUserOrder() {
       return loggedInUserOrder;
    }
 
@@ -122,16 +116,17 @@ public class CucumberDataHelper {
    public static Map<String, String> getUrns() {
       return urns;
    }
-   
+
    /**
     * Assign a new empty URNs Map
     */
    public static void resetUrns() {
       urns = new HashMap<>();
    }
-   
+
    /**
     * Get the output file name
+    * 
     * @return outputFilename
     */
    public static String getOutputFilename() {
@@ -140,6 +135,7 @@ public class CucumberDataHelper {
 
    /**
     * Set the output file name
+    * 
     * @param outputFileName - The name to set it to
     */
    public static void setOutputFilename(String outputFileName) {

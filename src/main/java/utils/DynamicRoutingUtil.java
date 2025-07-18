@@ -22,7 +22,8 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
 /**
- * Creates a new logger with a dedicated RollingFileAppender for the given test case
+ * Creates a new logger with a dedicated RollingFileAppender for the given test
+ * case
  */
 public class DynamicRoutingUtil {
 
@@ -54,13 +55,14 @@ public class DynamicRoutingUtil {
       String finalFeatureName = (decodedFeatureName == null || decodedFeatureName.isEmpty()) ? "defaultFeature"
             : escapeFileName(decodedFeatureName);
 
-      // 2) Clean up the testName to avoid invalid filename characters (and create a unique log for multiple examples
+      // 2) Clean up the testName to avoid invalid filename characters (and create a
+      // unique log for multiple examples
       String timestamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
       String safeTestName = escapeFileName(testName) + "-" + timestamp;
-      
+
       // 3) Build the path to logs folder : i.e. target/logs/SomeFeature
       String logsDir;
-      
+
       if ("GlobalRun".equalsIgnoreCase(safeTestName) && "global".equalsIgnoreCase(finalFeatureName)) {
          logsDir = "target/logs";
       } else {
@@ -82,16 +84,19 @@ public class DynamicRoutingUtil {
       Configuration config = ctx.getConfiguration();
 
       // 6) Define the layout pattern
-      PatternLayout layout = PatternLayout.newBuilder().withPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{1} - %msg%n").build();
+      PatternLayout layout = PatternLayout.newBuilder()
+            .withPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{1} - %msg%n").build();
 
       // 7) Composite triggering policy
-      CompositeTriggeringPolicy compositePolicy = CompositeTriggeringPolicy.createPolicy(SizeBasedTriggeringPolicy.createPolicy("10MB"),
+      CompositeTriggeringPolicy compositePolicy = CompositeTriggeringPolicy.createPolicy(
+            SizeBasedTriggeringPolicy.createPolicy("10MB"),
             TimeBasedTriggeringPolicy.newBuilder().withInterval(1).build());
 
       // 8) Create a RollingFileAppender builder
       RollingFileAppender.Builder<?> rollingBuilder = RollingFileAppender.newBuilder().setConfiguration(config)
-            .setName("RollingFileAppender_" + safeTestName).withFileName(logFileName).withFilePattern(logFilePattern).withAppend(true)
-            .withPolicy(compositePolicy).withStrategy(DefaultRolloverStrategy.newBuilder().withMax("20").build()).setLayout(layout);
+            .setName("RollingFileAppender_" + safeTestName).withFileName(logFileName)
+            .withFilePattern(logFilePattern).withAppend(true).withPolicy(compositePolicy)
+            .withStrategy(DefaultRolloverStrategy.newBuilder().withMax("20").build()).setLayout(layout);
 
       Appender fileAppender = rollingBuilder.build();
       fileAppender.start();
@@ -99,7 +104,8 @@ public class DynamicRoutingUtil {
 
       // 9) Build the console appender
       ConsoleAppender.Builder<?> consoleBuilder = ConsoleAppender.newBuilder().setConfiguration(config)
-            .setName("ConsoleAppender_" + safeTestName).setLayout(layout).setTarget(ConsoleAppender.Target.SYSTEM_OUT);
+            .setName("ConsoleAppender_" + safeTestName).setLayout(layout)
+            .setTarget(ConsoleAppender.Target.SYSTEM_OUT);
 
       Appender consoleAppender = consoleBuilder.build();
       consoleAppender.start();
@@ -110,8 +116,8 @@ public class DynamicRoutingUtil {
       LoggerConfig existingConfig = config.getLoggerConfig(loggerName);
       LoggerConfig loggerConfig;
       if (!existingConfig.getName().equals(loggerName) || existingConfig == null) {
-         loggerConfig = LoggerConfig.newBuilder().withConfig(config).withLoggerName(loggerName).withLevel(Level.INFO).withAdditivity(false)
-               .build();
+         loggerConfig = LoggerConfig.newBuilder().withConfig(config).withLoggerName(loggerName).withLevel(Level.INFO)
+               .withAdditivity(false).build();
       } else {
          loggerConfig = existingConfig;
       }

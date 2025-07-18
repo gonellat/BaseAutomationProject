@@ -13,9 +13,9 @@ public class IConstants {
       throw new IllegalStateException("Utility class");
    }
 
-   public static final String GET_PRODUCTS_API = "GET_PRODUCTS_API";
-   public static final String URL= "URL";
-   
+   /** The base URL property key. */
+   public static final String URL = "URL";
+
    // Plugin Ones
    /** reports Constant **/
    public static final String REPORTS_FOLDER = "target/reports/";
@@ -68,8 +68,6 @@ public class IConstants {
    /** Smoke Constant **/
    public static final String DEFAULT_TAG_VALUE = "Smoke";
 
-   
-
    // True / False Ones
    /** TRUE Constant **/
    public static final String TRUE = "TRUE";
@@ -109,7 +107,7 @@ public class IConstants {
    public static final String LI = "li";
    /** div Constant **/
    public static final String DIV = "div";
-   
+
    // Order Ones
    /** ASCENDING Constant **/
    public static final String ASCENDING = "ASCENDING";
@@ -132,13 +130,13 @@ public class IConstants {
    /** browser Constant **/
    public static final String BROWSER = "browser";
 
-     // Enabled / Disabled
+   // Enabled / Disabled
    /** Disabled Constant **/
    public static final String DISABLED = "disabled";
    /** Enabled Constant **/
    public static final String ENABLED = "enabled";
 
-      // Header / Footer
+   // Header / Footer
    /** All Constant **/
    public static final String HEADER = "header";
    /** All Constant **/
@@ -167,12 +165,12 @@ public class IConstants {
    public static final String DESCRIPTION = "description";
    /** Test Constant **/
    public static final String TEST = "Test";
-      /** Replace Empty Constant **/
+   /** Replace Empty Constant **/
    public static final String EMPTY = "Empty";
    /** File Of Files Lower case **/
    public static final String FILE_OF_FILES_LOWERCASE = "fileoffiles";
    /** FILE NAME Constant **/
-   public static final String FILE_NAME = "FILE_NAME";  
+   public static final String FILE_NAME = "FILE_NAME";
    /** NO Change Constant **/
    public static final String NOCHANGE = "NOCHANGE";
    /** Number Constant **/
@@ -191,5 +189,5 @@ public class IConstants {
    public static final String VALUE = "value";
    /** XML Line Break Constant **/
    public static final String XML_LINE_BREAK = "\n";
-   
+
 }

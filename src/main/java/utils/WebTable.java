@@ -17,12 +17,14 @@ import listener.ListenerPlugin;
 import pages.BasePageClass;
 
 /**
- * This is a utility class to get string and element values from a table. The table in question may either be 1) A
- * header formatted table - i.e. the first row is a header row and each subsequent row is data for those columns 2) A
- * label formatted table - i.e. the first column is the 'label' and then the next column has the data Using the
- * constructor you can get the data (text and elements) for both types of table. This can either be as a list or a map.
- * You can also specify if you want all page data or just the current page of data, or if you just want a row of data on
- * a specific page
+ * This is a utility class to get string and element values from a table. The
+ * table in question may either be 1) A header formatted table - i.e. the first
+ * row is a header row and each subsequent row is data for those columns 2) A
+ * label formatted table - i.e. the first column is the 'label' and then the
+ * next column has the data Using the constructor you can get the data (text and
+ * elements) for both types of table. This can either be as a list or a map. You
+ * can also specify if you want all page data or just the current page of data,
+ * or if you just want a row of data on a specific page
  */
 public class WebTable extends BasePageClass {
 
@@ -86,7 +88,8 @@ public class WebTable extends BasePageClass {
    /**
     * This constructor is used for getting the Table data
     * 
-    * @param strTableLocator This is the string type and locator separated by :: used to find the table element
+    * @param strTableLocator This is the string type and locator separated by ::
+    *                        used to find the table element
     * @param pages           "All" or a string page number e.g. "1" or N/A
     * @param row             "All" or a string row number e.g. "1"
     */
@@ -103,18 +106,20 @@ public class WebTable extends BasePageClass {
    }
 
    /**
-    * This method waits for the supplied table to exist. It calls readDataRowsOnScreenListList grabbing the text for each
-    * row required into a List/List//String
+    * This method waits for the supplied table to exist. It calls
+    * readDataRowsOnScreenListList grabbing the text for each row required into a
+    * List/List//String
     * 
-    * @param pages - String representation of the pages required e.g. "0" or "All" or "N/A" (use N/A when you know there
-    *              won't be page next/number elements)
+    * @param pages - String representation of the pages required e.g. "0" or "All"
+    *              or "N/A" (use N/A when you know there won't be page next/number
+    *              elements)
     * @param row   - A string representation of the rows required e.g. "0" or "All"
     */
    public void getTableDataListList(String pages, String row) {
 
       /*
-       * Some pages have a reload list button, wait for this to be clickable before continuing to avoid a stale element
-       * exception
+       * Some pages have a reload list button, wait for this to be clickable before
+       * continuing to avoid a stale element exception
        */
       setWait(new WebDriverWait(getDriver(), Duration.ofMillis(500)));
       if (isElementExists(getWait(), RELOAD_LIST)) {
@@ -125,8 +130,10 @@ public class WebTable extends BasePageClass {
 
       // Get the number of pages
       if (pages.equalsIgnoreCase(IConstants.ALL)) {
-         // NOTE:: Although this method can read in multiple pages into tableElementData if you try to interact with any of them
-         // it will fail with a stale element as you have navigated away from and then back to the first page.
+         // NOTE:: Although this method can read in multiple pages into tableElementData
+         // if you try to interact with any of them
+         // it will fail with a stale element as you have navigated away from and then
+         // back to the first page.
          // You must therefore get the table again with pages = 2, etc.. in a loop.
          // ALL will only work with tableData as this is just strings not elements.
          ListenerPlugin.addScreenshotToReport("Intial Table View", "");
@@ -230,9 +237,11 @@ public class WebTable extends BasePageClass {
       List<WebElement> headers = row.findElements(By.tagName(IConstants.TH));
       // If no cells then throw an error
       if (columns.isEmpty() && headers.isEmpty()) {
-         throw new InvalidOperationException("There are no table cells in the table " + strTableLocator + " row: " + rowNumber);
+         throw new InvalidOperationException(
+               "There are no table cells in the table " + strTableLocator + " row: " + rowNumber);
       } else if (columns.size() == 1) {
-         // if there is only one cell data for the row then clear it as this means there is no data
+         // if there is only one cell data for the row then clear it as this means there
+         // is no data
          // it has a text like "No User Trackers Found"
          TestLoggerHolder.getLogger().info("The table row only has one column");
       }
@@ -262,7 +271,8 @@ public class WebTable extends BasePageClass {
    }
 
    /**
-    * This method converts a List/List/String to a hashmap This is used for label format table i.e. has 2 columns
+    * This method converts a List/List/String to a hashmap This is used for label
+    * format table i.e. has 2 columns
     */
    public void convertLabelTableFormatToMap() {
       // Iterate through the list
@@ -274,9 +284,11 @@ public class WebTable extends BasePageClass {
    }
 
    /**
-    * This method converts a List/List/String to a hashmap This is used for label format table i.e. has 2 columns. Stops
-    * adding items at the first key, whereas convertLabelTableFormatToMap() will get the last instance of the key. For
-    * instance if there are three 'URN' keys in the table, this method will add the first, not the last.
+    * This method converts a List/List/String to a hashmap This is used for label
+    * format table i.e. has 2 columns. Stops adding items at the first key, whereas
+    * convertLabelTableFormatToMap() will get the last instance of the key. For
+    * instance if there are three 'URN' keys in the table, this method will add the
+    * first, not the last.
     */
    public void convertLabelTableFormatToMapUsingFirst() {
       // Iterate through the list
@@ -287,10 +299,10 @@ public class WebTable extends BasePageClass {
          }
       }
    }
-   
+
    /**
-    * This method converts a List/List/String to a hashmap This is used for header format table i.e. multiple columns and
-    * the first row is a header / keys
+    * This method converts a List/List/String to a hashmap This is used for header
+    * format table i.e. multiple columns and the first row is a header / keys
     */
    public void convertHeaderTableFormatToMap() {
       // Iterate through the list
@@ -342,7 +354,8 @@ public class WebTable extends BasePageClass {
    /**
     * This method clicks the number of results per page
     * 
-    * @param resultsPerPage - Number of Results per page to click either 10, 20 or 50
+    * @param resultsPerPage - Number of Results per page to click either 10, 20 or
+    *                       50
     */
    public void clickNumberOfResultsPerPage(String resultsPerPage) {
       List<WebElement> divs = findElementsBy(PAGINATION_PAGE_SIZE);

@@ -30,10 +30,15 @@ public class CSVDataHandler {
 
    private static Map<String, String> dataMap = new HashMap<>();
 
+   /**
+    * Injects a custom map of CSV key-value data into the context.
+    *
+    * @param dataMap the data map to set
+    */
    public static void setDataMap(Map<String, String> dataMap) {
       CSVDataHandler.dataMap = dataMap;
    }
-   
+
    /**
     * This method stores a csv as a list of maps
     * 
@@ -42,7 +47,8 @@ public class CSVDataHandler {
     * @throws IOException - IO Exception for reading the csv
     * @return A map of the csv
     */
-   public static List<Map<String, String>> readCsvFileToListMaps(String filePath, char delimiterValue) throws IOException {
+   public static List<Map<String, String>> readCsvFileToListMaps(String filePath, char delimiterValue)
+         throws IOException {
       List<Map<String, String>> valueMap = new ArrayList<>();
       try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
          String line;
@@ -68,13 +74,18 @@ public class CSVDataHandler {
    }
 
    /**
-    * This method stores a csv as a map
-    * @throws CsvValidationException 
+    * Reads a CSV file and returns a map of key-value pairs based on the file
+    * content.
+    *
+    * @param filePath  the path to the CSV file
+    * @param delimiter the delimiter used in the file (e.g., comma, pipe)
+    * @return map of parsed key-value pairs from the CSV
+    * @throws IOException if the file cannot be read
     */
    public static Map<String, String> readCSVFile(String filePath, String delimiter) throws IOException {
 
       dataMap = new HashMap<>();
-            
+
       try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
          String line;
          String[] headers = null;
@@ -98,7 +109,7 @@ public class CSVDataHandler {
 
       return dataMap;
    }
-   
+
    /**
     * This method performs a String.split taking quotes into account.
     *
@@ -140,7 +151,8 @@ public class CSVDataHandler {
     * @return List of maps the CSV as a list of maps
     * @throws IOException - General Exception
     */
-   public static List<Map<String, String>> readCsvIntoListMap(String file, String area, char delimiterValue) throws IOException {
+   public static List<Map<String, String>> readCsvIntoListMap(String file, String area, char delimiterValue)
+         throws IOException {
       String filePath = FilePathConstants.DATAPATH.concat(area).concat(File.separator).concat(file);
       return readCsvFileToListMaps(filePath, delimiterValue);
    }
@@ -160,14 +172,15 @@ public class CSVDataHandler {
          return "";
       }
 
-      File[] matchingFiles = dir.listFiles(
-            file -> file.isFile() && file.getName().toLowerCase().startsWith(prefix) && file.getName().toLowerCase().endsWith(".csv"));
+      File[] matchingFiles = dir.listFiles(file -> file.isFile() && file.getName().toLowerCase().startsWith(prefix)
+            && file.getName().toLowerCase().endsWith(".csv"));
 
       if (matchingFiles == null || matchingFiles.length == 0) {
          return "";
       }
 
-      return Arrays.stream(matchingFiles).max(Comparator.comparingLong(File::lastModified)).map(File::getAbsolutePath).orElse("");
+      return Arrays.stream(matchingFiles).max(Comparator.comparingLong(File::lastModified)).map(File::getAbsolutePath)
+            .orElse("");
 
    }
 
@@ -184,14 +197,15 @@ public class CSVDataHandler {
          return reader.readAll();
       }
    }
-   
+
    /**
-    * This method gets the value of csv value usng the header key
-    * @param key
-    * @return
+    * Retrieves the CSV value for a given key.
+    *
+    * @param key the key to retrieve
+    * @return the corresponding CSV value, or null if not found
     */
    public static String getValueForCSVKey(String key) {
       return dataMap.get(key);
    }
-   
+
 }

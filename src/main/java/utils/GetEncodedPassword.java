@@ -1,9 +1,17 @@
 package utils;
 
 /**
- * This class is a main class to run in order to get an encoded password.
- **/
+ * Utility class to retrieve or generate encoded passwords for secure
+ * transmission or storage.
+ */
 public class GetEncodedPassword {
+
+   /**
+    * Default constructor for GetEncodedPassword.
+    */
+   public GetEncodedPassword() {
+      // default constructor
+   }
 
    /**
     * Method to get an encoded password (Change the string as required)

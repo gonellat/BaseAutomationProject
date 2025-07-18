@@ -42,8 +42,6 @@ public class XMLDataHandler {
    private static boolean xmlIsValid = true;
    private static String xmlError = null;
 
-  
-
    /* This array holds all the documents used to create and update an entity */
    private static List<Document> xmlDocs = new ArrayList<>();
    /* This array holds all the documents used to search for an entity */
@@ -59,7 +57,6 @@ public class XMLDataHandler {
    private XMLDataHandler() {
       throw new IllegalStateException("Utility class");
    }
-
 
    /**
     * Getter for getXmlError
@@ -96,7 +93,6 @@ public class XMLDataHandler {
    public static void setXmlIsValid(boolean xmlIsValid) {
       XMLDataHandler.xmlIsValid = xmlIsValid;
    }
-
 
    /***********************************************************
     * Create Entity XML Docs
@@ -211,7 +207,8 @@ public class XMLDataHandler {
    }
 
    /**
-    * This method gets the index of xml doc in the array by matching on the record id
+    * This method gets the index of xml doc in the array by matching on the record
+    * id
     * 
     * @param searchRecordId The record id to find in the doc
     * @return recordIdx The record index
@@ -228,7 +225,8 @@ public class XMLDataHandler {
          }
       }
       if (!bFound) {
-         throw new NotImplementedException("The record id " + searchRecordId + " cannot be found in any of the xmls for this test");
+         throw new NotImplementedException(
+               "The record id " + searchRecordId + " cannot be found in any of the xmls for this test");
       } else {
          return recordIdx;
       }
@@ -285,7 +283,6 @@ public class XMLDataHandler {
       return tagElement;
    }
 
-
    /**
     * This method adds the Search Preliminary document xml to a list array
     * 
@@ -318,7 +315,8 @@ public class XMLDataHandler {
    }
 
    /**
-    * This method extracts the search details from an xml and adds this as a document to the search docs array
+    * This method extracts the search details from an xml and adds this as a
+    * document to the search docs array
     * 
     * @param filePath The filepath of the file containing the search elements
     * @throws IOException Read Exception
@@ -332,7 +330,6 @@ public class XMLDataHandler {
       searchDoc.appendChildren(searchDetailElements);
       setSearchXmlDoc(searchDoc);
    }
-
 
    /**
     * This method adds the Search Preliminary document xml to a list array
@@ -376,7 +373,8 @@ public class XMLDataHandler {
    }
 
    /**
-    * This method extracts the view details from an xml and adds this as a document to the view docs array
+    * This method extracts the view details from an xml and adds this as a document
+    * to the view docs array
     * 
     * @param filePath The filepath of the file containing the view elements
     * @throws IOException Read Exception
@@ -431,7 +429,8 @@ public class XMLDataHandler {
    }
 
    /**
-    * This method gets elements within another element (pagename) with a given tag name
+    * This method gets elements within another element (pagename) with a given tag
+    * name
     * 
     * @param pageElement The element to find other elements within
     * @param innerTag    the tag within the element with a given name
@@ -485,7 +484,8 @@ public class XMLDataHandler {
       tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "file");
       Transformer t = tf.newTransformer(xslSource);
       // xslt 1.0 can only handle Files from within a stylesheet
-      FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
+      FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions
+            .asFileAttribute(PosixFilePermissions.fromString("rwx------"));
       File tempFile = Files.createTempFile("subXml-", ".xml", attr).toFile();
       tempFile.deleteOnExit();
       // Write substitution xml to File
@@ -531,11 +531,11 @@ public class XMLDataHandler {
       }
    }
 
-  
    /**
     * This method gets a list of files from a file list
     * 
-    * @param pathOfFileofFiles This the path to the xml file containing the list of files
+    * @param pathOfFileofFiles This the path to the xml file containing the list of
+    *                          files
     * @return List of files as strings
     * @throws IOException Exception if the file cannot be read
     */
@@ -578,24 +578,26 @@ public class XMLDataHandler {
       // Validate the xsd
       validator.validate((new StreamSource(new StringReader(xmlString))));
    }
-   
+
    /**
     * This method gets the value of the last tag with a given name
-    * @param tagName
-    * @return
+    * 
+    * @param tagName the XML tag to search for
+    * @return the tag value, or null if not found
     */
    public static String getLastElementValueWithTag(String tagName) {
       Element ele = xmlDocs.get(getLatestXMLDocIndex()).select(tagName).last();
       TestLoggerHolder.getLogger().debug("getLastElementValueWithTag=" + ele);
       return ele.text();
    }
-   
+
    /**
-    * This method gets the all the nodes called xx
-    * @param nodeName
-    * @return
+    * Gets the list of values for the given node name.
+    *
+    * @param nodeName the node name to extract values from
+    * @return list of matching node values
     */
-   public static Elements getNodesCalled (String nodeName) {
+   public static Elements getNodesCalled(String nodeName) {
       return xmlDocs.get(getLatestXMLDocIndex()).getElementsByTag(nodeName);
    }
 

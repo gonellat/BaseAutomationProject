@@ -1,0 +1,13 @@
+/target/
+/test-output/
+/logs/
+/reports/
+/console.txt
+.DS_Store
+/target\generated-sources\annotations/
+/target\generated-test-sources\test-annotations/
+/doc/
+# Ignore temp/unzipped folders
+drivers/**/*
+!drivers/*.exe
+/.scannerwork

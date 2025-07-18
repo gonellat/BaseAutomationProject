@@ -28,8 +28,8 @@ import utils.DriverManager;
 import utils.TestLoggerHolder;
 
 /**
- * This class should be extended upon for all page classes. It holds common properties and methods used for all
- * underlying pages
+ * Base class for all Page Objects. Provides utility methods for element
+ * interaction, scrolling, waits, and other common web actions.
  */
 public class BasePageClass {
 
@@ -85,6 +85,13 @@ public class BasePageClass {
    public static final String DRIVER_IS_NULL = "Driver is Null";
 
    /**
+    * Default constructor.
+    */
+   public BasePageClass() {
+      // no-op
+   }
+
+   /**
     * This method verifies the page tab matches with that passed in
     * 
     * @param tabTitle This is the expected tab title
@@ -131,10 +138,12 @@ public class BasePageClass {
    }
 
    /**
-    * This method takes a string and returns a given locator. It splits the string on ':' The first part is the locator
-    * type and second part is the locator value. It returns the 'by' locator
+    * This method takes a string and returns a given locator. It splits the string
+    * on ':' The first part is the locator type and second part is the locator
+    * value. It returns the 'by' locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return locator
     */
    public By byLocator(String strElement) {
@@ -165,9 +174,11 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper method for clearing the text of an object identified by a locator
+    * This method is a wrapper method for clearing the text of an object identified
+    * by a locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     */
    public void clearElement(String strElement) {
       try {
@@ -181,9 +192,9 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper class for clicking an object identified by a string locator
-    * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * Clicks the element identified by the provided selector.
+    *
+    * @param strElement locator in format "css::button" or "xpath:://button"
     */
    public void click(String strElement) {
       boolean buttonClickedOK = false;
@@ -208,7 +219,7 @@ public class BasePageClass {
          waitForElementToBeClickable(strElement).click();
       }
    }
-   
+
    /**
     * This method clicks outside
     */
@@ -218,7 +229,8 @@ public class BasePageClass {
    }
 
    /**
-    * This method clicks on an element. Note where possible try to use click(strElement)
+    * This method clicks on an element. Note where possible try to use
+    * click(strElement)
     * 
     * @param ele The WebElement to click
     */
@@ -227,7 +239,8 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper class for clicking a div containing text within a content box
+    * This method is a wrapper class for clicking a div containing text within a
+    * content box
     * 
     * @param textToClick String the text to click in the div
     */
@@ -255,8 +268,8 @@ public class BasePageClass {
          }
       }
       if (!itemClicked) {
-         throw new NotImplementedException(
-               "No item could be found to click under the content box " + CONTENT_BOX + " containing the text " + textToClick);
+         throw new NotImplementedException("No item could be found to click under the content box " + CONTENT_BOX
+               + " containing the text " + textToClick);
       }
    }
 
@@ -299,7 +312,8 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper class for clicking the first item within a content box
+    * This method is a wrapper class for clicking the first item within a content
+    * box
     * 
     * @return The text of the first item
     */
@@ -330,8 +344,8 @@ public class BasePageClass {
    }
 
    /**
-    * This method first enters the text into the box. This may bring up a filtered list of items in a list which is then
-    * clicked on.
+    * This method first enters the text into the box. This may bring up a filtered
+    * list of items in a list which is then clicked on.
     * 
     * @param mainTextBox - The string locator for the main box the user sees
     * @param text        - The text to enter/click
@@ -361,17 +375,21 @@ public class BasePageClass {
    }
 
    /**
-    * This method called from clickLiInUl and determines if the container box for our list of items is visible or not. If
-    * it is not then if the item we supplied is available it is clicked.
+    * This method called from clickLiInUl and determines if the container box for
+    * our list of items is visible or not. If it is not then if the item we
+    * supplied is available it is clicked.
     * 
     * @param x            This the current box container element index
     * @param elements     - This is the full list of box containers
-    * @param uList        - This is the list box we are interested in that has the li items
+    * @param uList        - This is the list box we are interested in that has the
+    *                     li items
     * @param text         - This is the text to click
-    * @param enterClicked - This is a boolean value to determine whether the item was clicked or not
+    * @param enterClicked - This is a boolean value to determine whether the item
+    *                     was clicked or not
     * @return The clicked value
     */
-   private boolean clickLiItemIfParentIsNotHidden(int x, List<WebElement> elements, String text, boolean enterClicked) {
+   private boolean clickLiItemIfParentIsNotHidden(int x, List<WebElement> elements, String text,
+         boolean enterClicked) {
 
       WebElement container = elements.get(x);
       if (doesElementHaveAttributeWithValue(container, "aria-hidden", "false")) {
@@ -382,7 +400,7 @@ public class BasePageClass {
                   sleep(0.5);
                   liItems.get(y).click();
                   setWait(new WebDriverWait(getDriver(), Duration.ofMillis(5000)));
-                  getWait().until(ExpectedConditions.attributeContains(container, "aria-hidden","true"));
+                  getWait().until(ExpectedConditions.attributeContains(container, "aria-hidden", "true"));
                   enterClicked = true;
                   break;
                }
@@ -406,7 +424,8 @@ public class BasePageClass {
       // dialog box, if its still there click it again.
       int attempts = 0;
       while (isElementExists(getWait(), "css::md-dialog-container ng-scope") && attempts < 5) {
-         TestLoggerHolder.getLogger().info("Click the Commit button again as it didn't work, attempt {}", attempts++);
+         TestLoggerHolder.getLogger().info("Click the Commit button again as it didn't work, attempt {}",
+               attempts++);
          click(DIALOG_COMMIT);
       }
       TestLoggerHolder.getLogger().info("Clicked the Commit button on the dialog");
@@ -422,10 +441,13 @@ public class BasePageClass {
    }
 
    /**
-    * This method finds and returns an element found by its locator within a web element. e.g. an item within a TR
+    * This method finds and returns an element found by its locator within a web
+    * element. e.g. an item within a TR
     * 
-    * @param outerElement          The Web element that contains the inner element to find
-    * @param innerElementByLocator The string locator for the inner web element to find
+    * @param outerElement          The Web element that contains the inner element
+    *                              to find
+    * @param innerElementByLocator The string locator for the inner web element to
+    *                              find
     * @return WebElement
     */
    public WebElement findElementBy(WebElement outerElement, String innerElementByLocator) {
@@ -434,10 +456,13 @@ public class BasePageClass {
    }
 
    /**
-    * This method finds and returns a list of elements found by the locator within a web element. e.g. TD items within a TR
+    * This method finds and returns a list of elements found by the locator within
+    * a web element. e.g. TD items within a TR
     * 
-    * @param outerElement           The Web element that contains the inner element to find
-    * @param innerElementsByLocator The string locator for the inner web elements to find
+    * @param outerElement           The Web element that contains the inner element
+    *                               to find
+    * @param innerElementsByLocator The string locator for the inner web elements
+    *                               to find
     * @return List of WebElements
     */
    public List<WebElement> findElementsBy(WebElement outerElement, String innerElementsByLocator) {
@@ -466,9 +491,11 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper for getting an object attribute identified by a locator
+    * This method is a wrapper for getting an object attribute identified by a
+    * locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @param attribute  The elements attribute to get
     * @return String
     */
@@ -485,9 +512,11 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper for getting an object css value identified by a locator
+    * This method is a wrapper for getting an object css value identified by a
+    * locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @param attribute  The elements attribute to get
     * @return WebElement
     */
@@ -532,7 +561,8 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper for determining if a webelement has an attribute with a value
+    * This method is a wrapper for determining if a webelement has an attribute
+    * with a value
     * 
     * @param webElement This is the element that you want to get the attribute for
     * @param attribute  The elements attribute to get
@@ -553,13 +583,14 @@ public class BasePageClass {
     * @return driver
     */
    public static RemoteWebDriver getDriver() {
-      return(DriverManager.getCurrentDriver());
+      return (DriverManager.getCurrentDriver());
    }
 
    /**
     * This method gets a the first selected option
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return The text in the first select option
     */
    public String getFirstSelected(String strElement) {
@@ -572,7 +603,8 @@ public class BasePageClass {
    /**
     * This method gets a list of all the select options
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return List Of Strings from the Select element
     */
    public List<String> getSelectList(String strElement) {
@@ -588,7 +620,8 @@ public class BasePageClass {
    /**
     * This method gets the text from an element
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return WebElement
     */
    public String getText(String strElement) {
@@ -615,7 +648,8 @@ public class BasePageClass {
    /**
     * This method is a wrapper method waiting for an object to be displayed
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return true if it is displayed
     */
    public boolean isDisplayed(String strElement) {
@@ -636,10 +670,12 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper method to wait for an object to exist, returns true if does.
+    * This method is a wrapper method to wait for an object to exist, returns true
+    * if does.
     * 
     * @param wait       A WebDriver wait object
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return boolean
     */
    public boolean isElementExists(WebDriverWait wait, String strElement) {
@@ -656,7 +692,8 @@ public class BasePageClass {
    /**
     * This method returns true if the element is enabled
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return WebElement
     */
    public boolean isEnabled(String strElement) {
@@ -737,7 +774,8 @@ public class BasePageClass {
    /**
     * Wrapper method for returning a Select Element
     * 
-    * @param selectElement This is the string type and locator separated by :: used to find the element
+    * @param selectElement This is the string type and locator separated by :: used
+    *                      to find the element
     * @return Select Element
     */
    public Select select(String selectElement) {
@@ -746,9 +784,11 @@ public class BasePageClass {
    }
 
    /**
-    * This method selects a given option with given text in a select drop down element
+    * This method selects a given option with given text in a select drop down
+    * element
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @param text       This is text to select
     */
    public void selectByVisibleText(String strElement, String text) {
@@ -765,9 +805,11 @@ public class BasePageClass {
    }
 
    /**
-    * This is a wrapper method for sending keystrokes to an object identified by a locator
+    * This is a wrapper method for sending keystrokes to an object identified by a
+    * locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @param text       This is the text to send to the WebElement
     */
    public void sendKeys(String strElement, String text) {
@@ -781,10 +823,13 @@ public class BasePageClass {
    }
 
    /**
-    * This is a wrapper method for sending a file to an object identified by a locator
+    * This is a wrapper method for sending a file to an object identified by a
+    * locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
-    * @param filePath   This is the string path to the file to send to the WebElement
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
+    * @param filePath   This is the string path to the file to send to the
+    *                   WebElement
     */
    public void sendKeysForFileUpload(String strElement, String filePath) {
       try {
@@ -812,9 +857,11 @@ public class BasePageClass {
    }
 
    /**
-    * This is a wrapper method for sending keystrokes to an object identified by a locator
+    * This is a wrapper method for sending keystrokes to an object identified by a
+    * locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @param key        This is the keys to send to the WebElement
     */
    public void sendKeys(String strElement, Keys key) {
@@ -885,7 +932,8 @@ public class BasePageClass {
    /**
     * This method waits for the invisibility of an element
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     */
    public void waitForInVisibilityOfElementLocatedBy(String strElement) {
       By by = byLocator(strElement);
@@ -901,7 +949,8 @@ public class BasePageClass {
    /**
     * This method waits for the visibility of an element
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return Returns the element if is is visible
     */
    public WebElement waitForVisibilityOfElementLocatedBy(String strElement) {
@@ -916,9 +965,11 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper class for waiting for an element to be clickable by a locator
+    * This method is a wrapper class for waiting for an element to be clickable by
+    * a locator
     * 
-    * @param strElement This is the string type and locator separated by :: used to find the element
+    * @param strElement This is the string type and locator separated by :: used to
+    *                   find the element
     * @return WebElement
     */
    public WebElement waitForElementToBeClickable(String strElement) {
@@ -929,8 +980,9 @@ public class BasePageClass {
    }
 
    /**
-    * This method is a wrapper class for waiting for an element to be clickable by a locator. Should only be used for Table
-    * elements - otherwise use waitForElementToBeClickable(string)
+    * This method is a wrapper class for waiting for an element to be clickable by
+    * a locator. Should only be used for Table elements - otherwise use
+    * waitForElementToBeClickable(string)
     * 
     * @param element This is WebElement to wait for
     * @return element this is the WebElement
@@ -959,7 +1011,8 @@ public class BasePageClass {
    }
 
    /**
-    * Waits for an element containing specific text, refreshing the page if necessary
+    * Waits for an element containing specific text, refreshing the page if
+    * necessary
     * 
     * @param statusLocator The locator status
     * @param expectedText  The expected text
@@ -970,7 +1023,8 @@ public class BasePageClass {
 
       for (int attempt = 1; attempt <= maxAttempts; attempt++) {
          try {
-            WebElement statusElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(statusLocator)));
+            WebElement statusElement = wait
+                  .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(statusLocator)));
             boolean isTextPresent = Boolean.TRUE
                   .equals(wait.until(ExpectedConditions.textToBePresentInElement(statusElement, expectedText)));
 
@@ -1027,7 +1081,8 @@ public class BasePageClass {
    /**
     * This method uses actions to move to the element
     * 
-    * @param strElement String locator for the element that the focus needs to be moved to
+    * @param strElement String locator for the element that the focus needs to be
+    *                   moved to
     */
    public void actionMoveToElement(String strElement) {
       WebElement element = waitForVisibilityOfElementLocatedBy(strElement);
@@ -1106,16 +1161,19 @@ public class BasePageClass {
     ***************************************************************************/
 
    /**
-    * This method performs a click action on object identified by its id and using javascript
+    * This method performs a click action on object identified by its id and using
+    * javascript
     * 
     * @param strElementId- The id of the element to click
     */
    public void jsClickId(String strElementId) {
-      ((JavascriptExecutor) getDriver()).executeScript("document.getElementById('" + strElementId + "').click(strElement);");
+      ((JavascriptExecutor) getDriver())
+            .executeScript("document.getElementById('" + strElementId + "').click(strElement);");
    }
 
    /**
-    * This method performs a click action on object identified by its id and using javascript
+    * This method performs a click action on object identified by its id and using
+    * javascript
     * 
     * @param strElement- The id of the element to click
     */
@@ -1164,11 +1222,12 @@ public class BasePageClass {
    public void jsSetFocus(String strElement) {
       sendKeys(strElement, Keys.SHIFT);
       String strElementConstant = strElement.replace("css::#", "");
-      ((JavascriptExecutor) getDriver()).executeScript("document.getElementById('" + strElementConstant + "').focus();");
+      ((JavascriptExecutor) getDriver())
+            .executeScript("document.getElementById('" + strElementConstant + "').focus();");
    }
 
    /**
-    * This method scrolls to the top of the page
+    * Scrolls the window to the top using JavaScript.
     */
    public void jsWindowScrollToTop() {
       ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0,0);");
@@ -1191,7 +1250,8 @@ public class BasePageClass {
     * @return Returns the body height
     */
    public int jsGetBodyHeight() {
-      return ((Number) ((JavascriptExecutor) getDriver()).executeScript("return document.body.scrollHeight", "")).intValue();
+      return ((Number) ((JavascriptExecutor) getDriver()).executeScript("return document.body.scrollHeight", ""))
+            .intValue();
    }
 
    /**
@@ -1208,7 +1268,7 @@ public class BasePageClass {
     */
    public void waitForJavascriptToComplete() {
       setWait(new WebDriverWait(getDriver(), Duration.ofSeconds(15)));
-      wait.until((ExpectedCondition<Boolean>) driverNew -> ((JavascriptExecutor) getDriver()).executeScript("return document.readyState")
-            .equals("complete"));
+      wait.until((ExpectedCondition<Boolean>) driverNew -> ((JavascriptExecutor) getDriver())
+            .executeScript("return document.readyState").equals("complete"));
    }
 }

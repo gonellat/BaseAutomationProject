@@ -1,0 +1,79 @@
+name: Run Selenium BDD Tests
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        #browser: [CHROME, FIREFOX, EDGE]
+        browser: [CHROME]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: "."
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Set up Chrome for Selenium
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install Oracle JDBC manually
+        run: mvn install:install-file -Dfile=CommonBDDFramework/lib/ojdbc6-11.2.0.4.jar -DgroupId=oracle -DartifactId=ojdbc6 -Dversion=11.2.0.4 -Dpackaging=jar
+
+      - name: Make local chromedriver executable (optional fallback)
+        run: chmod +x CommonBDDFramework/drivers/chromedriver || true
+
+      - name: Make local geckodriver executable (optional fallback)
+        run: chmod +x CommonBDDFramework/drivers/geckodriver || true
+
+      - name: Make local edgedriver executable (optional fallback)
+        run: chmod +x CommonBDDFramework/drivers/msedgedriver || true
+
+      - name: Build with Maven
+        run: mvn clean compile
+        working-directory: ./CommonBDDFramework
+
+      - name: SonarCloud Scan
+        working-directory: ./CommonBDDFramework
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn verify sonar:sonar \
+          -Dsonar.projectKey=CommonBDDFramework \
+          -Dsonar.organization=gonellat \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+          -Dcucumber.filter.tags="@XMLDemo" \
+          -Denv="local" \
+          -Dbrowser=${{ matrix.browser }} \
+          -Dheadless=TRUE \
+          -DmaxLocalInstances=1
+
+      # ========== REPORT COLLECTION ==========
+
+      - name: Find latest Extent Report folder
+        if: always()
+        run: |
+          latest_extent=$(ls -td CommonBDDFramework/target/NewStyleReports/New_Style_Report* | head -n 1)
+          echo "report_path=$latest_extent" >> $GITHUB_ENV
+
+      - name: Upload All Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts-${{ matrix.browser }}
+          path: |
+            ${{ env.report_path }}/
+            CommonBDDFramework/target/logs/
+            CommonBDDFramework/target/cucumber-reports/

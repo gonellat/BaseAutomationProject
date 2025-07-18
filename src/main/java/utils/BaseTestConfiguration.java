@@ -15,7 +15,8 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
 /**
- * This class is used at the start of a test run to store variables supplied by the property files.
+ * This class is used at the start of a test run to store variables supplied by
+ * the property files.
  */
 public class BaseTestConfiguration {
 
@@ -30,7 +31,6 @@ public class BaseTestConfiguration {
    private static int maxLocalInstances;
    private static BaseObjectManager pageObjectManager;
 
-   
    /** the Products API page **/
    public static String getProductsAPI;
 
@@ -38,28 +38,43 @@ public class BaseTestConfiguration {
    private static String reportUsername;
    private static String reportUserPassword;
 
-   // Constructor
-   public  BaseTestConfiguration() {
-
-   }
-
-   public static void setPageObjectManager(BaseObjectManager manager) {
-       pageObjectManager = manager;
-   }
-
-   public static BaseObjectManager getPageObjectManager() {
-       if (pageObjectManager == null) {
-           throw new IllegalStateException("PageObjectManager not set. Did you forget to call setPageObjectManager()?");
-       }
-       return pageObjectManager;
+   /**
+    * Constructs the BaseTestConfiguration used to initialize shared test config
+    * variables.
+    */
+   public BaseTestConfiguration() {
+      // no-op
    }
 
    /**
-    * This method reads the supplied properties file
-    * 
-    * @param file
-    * @return properties
-    * @throws IOException
+    * Injects a page object manager instance.
+    *
+    * @param manager the page object manager to set
+    */
+   public static void setPageObjectManager(BaseObjectManager manager) {
+      pageObjectManager = manager;
+   }
+
+   /**
+    * Retrieves the current page object manager.
+    *
+    * @return the page object manager instance
+    */
+   public static BaseObjectManager getPageObjectManager() {
+      if (pageObjectManager == null) {
+         throw new IllegalStateException(
+               "PageObjectManager not set. Did you forget to call setPageObjectManager()?");
+      }
+      return pageObjectManager;
+   }
+
+   /**
+    * Reads a `.properties` file from the given path and loads it into a
+    * {@link Properties} object.
+    *
+    * @param file the path to the properties file
+    * @return the loaded properties
+    * @throws IOException if the file cannot be read
     */
    public static Properties readProperties(Path file) throws IOException {
       try (FileInputStream fileInputStream = new FileInputStream(file.toFile())) {
@@ -70,20 +85,26 @@ public class BaseTestConfiguration {
    }
 
    /**
-    * This method reads the supplied properties file (including the Cucumber Runner). It also handles properties being
-    * supplied via a Maven Run Configuration or via an Azure pipeline.
+    * This method reads the supplied properties file (including the Cucumber
+    * Runner). It also handles properties being supplied via a Maven Run
+    * Configuration or via an Azure pipeline.
     * 
     * @param localFile This is the local property file path
-    * @throws IOException general IO exception if the file cannot be read or written to
+    * @throws IOException general IO exception if the file cannot be read or
+    *                     written to
     */
    public static void readRunProperties(Path localFile) throws IOException {
       Properties properties = readProperties(localFile);
 
-      TestLoggerHolder.getLogger().info("================================================================================");
-      TestLoggerHolder.getLogger().info("********************************************************************************");
+      TestLoggerHolder.getLogger()
+            .info("================================================================================");
+      TestLoggerHolder.getLogger()
+            .info("********************************************************************************");
       TestLoggerHolder.getLogger().info("* Starting Test Execution Run");
-      TestLoggerHolder.getLogger().info("********************************************************************************");
-      TestLoggerHolder.getLogger().info("================================================================================");
+      TestLoggerHolder.getLogger()
+            .info("********************************************************************************");
+      TestLoggerHolder.getLogger()
+            .info("================================================================================");
 
       getEnvironmentFromPropertyFileMaven(properties);
 
@@ -96,14 +117,14 @@ public class BaseTestConfiguration {
       getMaxLocalInstancesFromPropertyFileMaven(properties);
 
       // Logging the environment variables used in the current test run
-      TestLoggerHolder.getLogger()
-      .info(String.format("Environment (env)                                     Variable Setting: %s", getEnv()));
-      TestLoggerHolder.getLogger()
-      .info(String.format("Headless                                              Variable Setting: %s", getHeadless()));
-      TestLoggerHolder.getLogger()
-      .info(String.format("Browser                                               Variable Setting: %s", getBrowser()));
-      TestLoggerHolder.getLogger()
-      .info(String.format("Tags                                                  Variable Setting: %s", getTagValue()));
+      TestLoggerHolder.getLogger().info(
+            String.format("Environment (env)                                     Variable Setting: %s", getEnv()));
+      TestLoggerHolder.getLogger().info(String
+            .format("Headless                                              Variable Setting: %s", getHeadless()));
+      TestLoggerHolder.getLogger().info(String
+            .format("Browser                                               Variable Setting: %s", getBrowser()));
+      TestLoggerHolder.getLogger().info(String
+            .format("Tags                                                  Variable Setting: %s", getTagValue()));
    }
 
    /**
@@ -152,7 +173,8 @@ public class BaseTestConfiguration {
    }
 
    /**
-    * Attempts to detect and set the tag from the Cucumber Runner class using reflection
+    * Attempts to detect and set the tag from the Cucumber Runner class using
+    * reflection
     */
    private static void detectAndSetTagFromRunner() {
       // Try to retrieve the tags from the Cucumber runner annotation using reflection
@@ -181,7 +203,7 @@ public class BaseTestConfiguration {
       } catch (ClassNotFoundException e) {
          TestLoggerHolder.getLogger().error("Runner class not found: " + runnerClassName + " => " + e.getMessage());
       }
-      setTagValueAndLog("See XML File" , "Tag value not found, defaulting to: ");
+      setTagValueAndLog("See XML File", "Tag value not found, defaulting to: ");
    }
 
    /**
@@ -191,13 +213,13 @@ public class BaseTestConfiguration {
     * @return {@code true} if valid, otherwise {@code false}
     */
    private static boolean isValidTag(String tagValue) {
-      return tagValue !=null && !tagValue.trim().isEmpty() && !tagValue.equals(IConstants.NOT_SET_TAG_VALUE);
+      return tagValue != null && !tagValue.trim().isEmpty() && !tagValue.equals(IConstants.NOT_SET_TAG_VALUE);
    }
 
    /**
     * Sets the tag value and logs the message
     * 
-    * @param value The tag value to set
+    * @param value      The tag value to set
     * @param logMessage The log message prefix
     */
    private static void setTagValueAndLog(String value, String logMessage) {
@@ -206,28 +228,30 @@ public class BaseTestConfiguration {
    }
 
    /**
-    * Attempt to detect the TESTNG runner class dynamically by scanning the current thread's stack trace.
-    * This is useful when running tests via TestNG, where the "runnerClass" system property may not be set
+    * Attempt to detect the TESTNG runner class dynamically by scanning the current
+    * thread's stack trace. This is useful when running tests via TestNG, where the
+    * "runnerClass" system property may not be set
     * 
-    * @return The fully qualified name of the detected TestNG runner class or null if not found
+    * @return The fully qualified name of the detected TestNG runner class or null
+    *         if not found
     */
    private static String detectTestNGRunnerClass() {
       try {
          for (Class<?> clazz : getAllLoadedClasses()) {
-            if (AbstractTestNGCucumberTests.class.isAssignableFrom(clazz) && !clazz.equals(AbstractTestNGCucumberTests.class)) {
+            if (AbstractTestNGCucumberTests.class.isAssignableFrom(clazz)
+                  && !clazz.equals(AbstractTestNGCucumberTests.class)) {
                return clazz.getName(); // Return first found runner class
             }
          }
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
          TestLoggerHolder.getLogger().warn("Failed to detect TestNG Runner Class; " + e.getMessage());
       }
       return null;
    }
 
    /**
-    * Retrieves all loaded classes available in the JVM at runtime Used to scan for TestNG runner classes extending
-    * AbstractTestNGCucumberTests
+    * Retrieves all loaded classes available in the JVM at runtime Used to scan for
+    * TestNG runner classes extending AbstractTestNGCucumberTests
     * 
     * @return
     */
@@ -250,15 +274,14 @@ public class BaseTestConfiguration {
     * 
     * @param packageName The package name to scan
     * @param classLoader The class loader to use
-    * @param classes The list to store loaded classes
+    * @param classes     The list to store loaded classes
     */
    private static void loadClassesFromPackage(String packageName, ClassLoader classLoader, List<Class<?>> classes) {
       try {
          for (String className : getClassNamesFromPackage(packageName)) {
             loadClass(className, classLoader, packageName, classes);
          }
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
          TestLoggerHolder.getLogger().warn("Error processing package: " + e.getMessage());
       }
    }
@@ -266,25 +289,28 @@ public class BaseTestConfiguration {
    /**
     * Loads a single class and adds it to the provided list
     * 
-    * @param className The fully qualified class name
-    * @param clasLoader The class loader to use
+    * @param className   The fully qualified class name
+    * @param clasLoader  The class loader to use
     * @param packageName The package the class belongs to (for loging purposes)
-    * @param classes The list to store the loaded class.
+    * @param classes     The list to store the loaded class.
     */
-   private static void loadClass(String className, ClassLoader classLoader, String packageName, List<Class<?>> classes) {
+   private static void loadClass(String className, ClassLoader classLoader, String packageName,
+         List<Class<?>> classes) {
 
       try {
          classes.add(Class.forName(className, false, classLoader));
       } catch (ClassNotFoundException e) {
          TestLoggerHolder.getLogger().warn("Class not found: " + e.getMessage());
-      }  catch (LinkageError e) {
+      } catch (LinkageError e) {
          TestLoggerHolder.getLogger().warn("Linkage error when loading class: " + e.getMessage());
       } catch (SecurityException e) {
          TestLoggerHolder.getLogger().warn("Security Exception when accessing package: " + packageName);
-      }  catch (Exception e) {
-         TestLoggerHolder.getLogger().warn("Unexpected error loading class from package " + packageName + ": " +  e.getMessage());
+      } catch (Exception e) {
+         TestLoggerHolder.getLogger()
+               .warn("Unexpected error loading class from package " + packageName + ": " + e.getMessage());
       }
    }
+
    /**
     * Retrieves all classnames from a given package dynamically
     * 
@@ -299,30 +325,28 @@ public class BaseTestConfiguration {
          URL packageURL = classLoader.getResource(packagePath);
          if (packageURL != null) {
             File packageDir = new File(packageURL.toURI());
-            
+
             File[] files = packageDir.listFiles();
             if (files == null) {
-               TestLoggerHolder.getLogger().trace("No files found in package directory: "  + packageName);
+               TestLoggerHolder.getLogger().trace("No files found in package directory: " + packageName);
                return classNames;
             }
-            
+
             for (File file : files) {
                if (file.getName().endsWith(".class")) {
                   String className = packageName + "." + file.getName().replace(".class", "");
                   classNames.add(className);
                }
             }
-         }
-         else {
+         } else {
             TestLoggerHolder.getLogger().trace("Package not found: " + packageName);
          }
-      } 
-      catch (Exception e) {
-         TestLoggerHolder.getLogger().trace("Unexpected Error retrieving classes from package: " + packageName + ": " + e.getMessage());
+      } catch (Exception e) {
+         TestLoggerHolder.getLogger()
+               .trace("Unexpected Error retrieving classes from package: " + packageName + ": " + e.getMessage());
       }
       return classNames;
    }
-
 
    /**
     * This method gets the headless value to use from Maven or the config file
@@ -367,12 +391,14 @@ public class BaseTestConfiguration {
    }
 
    /**
-    * This method gets the Max Local Instances value to use from Maven or the config file
+    * This method gets the Max Local Instances value to use from Maven or the
+    * config file
     * 
     * @param properties
     */
    private static void getMaxLocalInstancesFromPropertyFileMaven(Properties properties) {
-      // Check if the Max Local Instances property has been supplied via Maven, or in the
+      // Check if the Max Local Instances property has been supplied via Maven, or in
+      // the
       // configuration file
       if (System.getProperty(IConstants.MAX_LOCAL_INSTANCES) == null) {
          maxLocalInstances = Integer.valueOf(properties.getProperty(IConstants.MAX_LOCAL_INSTANCES));
@@ -385,13 +411,12 @@ public class BaseTestConfiguration {
    /**
     * This sets the run date time for the report
     * <p>
-    * <strong>NB: </strong> It uses the date / time format required by Extent Reports.
+    * <strong>NB: </strong> It uses the date / time format required by Extent
+    * Reports.
     */
    public static void setRunDateTime() {
       runDateTime = DateUtils.getCurrentDateTime(DateTimeFormatConstants.YYYYMMDDHHMMSS);
    }
-
- 
 
    /**
     * This gets the environment
@@ -399,11 +424,11 @@ public class BaseTestConfiguration {
     * @return environment to use
     */
    public static String getEnv() {
-       if (env == null || env.trim().isEmpty()) {
-           System.err.println("[WARN] env not initialized — defaulting to local");
-           env = "local";
-       }
-       return env;
+      if (env == null || env.trim().isEmpty()) {
+         System.err.println("[WARN] env not initialized — defaulting to local");
+         env = "local";
+      }
+      return env;
    }
 
    /**
@@ -412,11 +437,11 @@ public class BaseTestConfiguration {
     * @return headless value to use
     */
    public static String getHeadless() {
-       if (headless == null || headless.trim().isEmpty()) {
-           System.err.println("[WARN] headless not initialized — defaulting to false");
-           headless = "false";
-       }
-       return headless;
+      if (headless == null || headless.trim().isEmpty()) {
+         System.err.println("[WARN] headless not initialized — defaulting to false");
+         headless = "false";
+      }
+      return headless;
    }
 
    /**
@@ -436,14 +461,19 @@ public class BaseTestConfiguration {
    public static String getBaseUrl() {
       return baseUrl;
    }
-   
 
+   /**
+    * Retrieves the configured browser to be used for tests (e.g., chrome,
+    * firefox).
+    *
+    * @return the browser name
+    */
    public static String getBrowser() {
-       if (browser == null || browser.trim().isEmpty()) {
-           System.err.println("[WARN] browser not initialized — defaulting to Chrome");
-           browser = "chrome";  //
-       }
-       return browser;
+      if (browser == null || browser.trim().isEmpty()) {
+         System.err.println("[WARN] browser not initialized — defaulting to Chrome");
+         browser = "chrome"; //
+      }
+      return browser;
    }
 
    /**
@@ -452,11 +482,11 @@ public class BaseTestConfiguration {
     * @return the Tags that have been set
     */
    public static String getTagValue() {
-       if (tagValue == null || tagValue.trim().isEmpty()) {
-           System.err.println("[WARN] tagValue not initialized — defaulting to '@Smoke'");
-           tagValue = "@Smoke";
-       }
-       return tagValue;
+      if (tagValue == null || tagValue.trim().isEmpty()) {
+         System.err.println("[WARN] tagValue not initialized — defaulting to '@Smoke'");
+         tagValue = "@Smoke";
+      }
+      return tagValue;
    }
 
    /**
@@ -486,7 +516,6 @@ public class BaseTestConfiguration {
       return reportUserPassword;
    }
 
-
    /**
     * Getter for downloadsPath
     * 
@@ -498,6 +527,7 @@ public class BaseTestConfiguration {
 
    /**
     * This method gets the productsApi page
+    * 
     * @return getProductsAPI
     */
    public static String getProductsApi() {

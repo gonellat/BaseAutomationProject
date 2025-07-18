@@ -4,12 +4,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 /**
- * TestLoggerHolder is a utility class for storing and retrieving a per-thread logger
- * and the log file path used by that test.
- * <p>
- * This class uses ThreadLocal to ensure thread-safe storage of logger instances
- * and their corresponding log file paths. It is useful in parallel test environments.
- * </p>
+ * Manages per-thread loggers for dynamic log routing to
+ * feature/scenario-specific files.
  */
 public class TestLoggerHolder {
 
@@ -40,8 +36,8 @@ public class TestLoggerHolder {
    }
 
    /**
-    * Returns the Logger for the current thread.
-    * If no Logger is set, returns a fallback global logger.
+    * Returns the Logger for the current thread. If no Logger is set, returns a
+    * fallback global logger.
     *
     * @return the current thread's logger instance
     */

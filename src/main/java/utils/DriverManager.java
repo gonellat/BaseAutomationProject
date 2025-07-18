@@ -15,7 +15,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import constants.IConstants;
 
 /**
- * This class deals with creating and storing the Selenium driver used for all web based tests
+ * Manages thread-safe WebDriver instances for each test thread.
+ * <p>
+ * Supports driver initialization (online and offline), lifecycle management,
+ * and cross-browser execution.
  */
 public class DriverManager {
 
@@ -25,6 +28,7 @@ public class DriverManager {
    private DriverManager() {
       throw new IllegalStateException("Utility class");
    }
+
    private static ThreadLocal<RemoteWebDriver> driverThreadLocal = new ThreadLocal<>();
 
    private static final String CHROME_DRIVER_NAME = "chromedriver";
@@ -69,60 +73,71 @@ public class DriverManager {
     * @return the Edge Driver name
     */
    public static String getEdgeDriverName() {
-      String edgeDriverPath = System.getProperty(OS_NAME).startsWith(WINDOWS) ? EDGE_DRIVER_NAME + ".exe" : EDGE_DRIVER_NAME;
+      String edgeDriverPath = System.getProperty(OS_NAME).startsWith(WINDOWS) ? EDGE_DRIVER_NAME + ".exe"
+            : EDGE_DRIVER_NAME;
       TestLoggerHolder.getLogger().info(edgeDriverPath);
       return edgeDriverPath;
    }
 
+   /**
+    * Attempts to download the correct driver version or fallback to local offline
+    * copy.
+    *
+    * @param browserName the browser name (e.g., "chrome", "firefox", "edge")
+    */
    public static void setOrDownloadDriver(String browserName) {
-       boolean isWindows = System.getProperty(OS_NAME).toLowerCase().contains("win");
-       String driverFileName;
-       String systemPropertyKey;
+      boolean isWindows = System.getProperty(OS_NAME).toLowerCase().contains("win");
+      String driverFileName;
+      String systemPropertyKey;
 
-       // Determine file name and system property based on browser
-       switch (browserName.toLowerCase()) {
-           case IConstants.FIREFOX:
-               driverFileName = isWindows ? "geckodriver.exe" : "geckodriver";
-               systemPropertyKey = WEBDRIVER_GECKO_DRIVER;
-               break;
-           case IConstants.EDGE:
-               driverFileName = isWindows ? "msedgedriver.exe" : "msedgedriver";
-               systemPropertyKey = WEBDRIVER_EDGE_DRIVER;
-               break;
-           case IConstants.CHROME:
-           default:
-               driverFileName = isWindows ? "chromedriver.exe" : "chromedriver";
-               systemPropertyKey = WEBDRIVER_CHROME_DRIVER;
-               break;
-       }
+      // Determine file name and system property based on browser
+      switch (browserName.toLowerCase()) {
+      case IConstants.FIREFOX:
+         driverFileName = isWindows ? "geckodriver.exe" : "geckodriver";
+         systemPropertyKey = WEBDRIVER_GECKO_DRIVER;
+         break;
+      case IConstants.EDGE:
+         driverFileName = isWindows ? "msedgedriver.exe" : "msedgedriver";
+         systemPropertyKey = WEBDRIVER_EDGE_DRIVER;
+         break;
+      case IConstants.CHROME:
+      default:
+         driverFileName = isWindows ? "chromedriver.exe" : "chromedriver";
+         systemPropertyKey = WEBDRIVER_CHROME_DRIVER;
+         break;
+      }
 
-       // 1️⃣ Attempt online driver download using your downloader (e.g., WebDriverManager logic)
-       try {
-           InetAddress address = InetAddress.getByName("google.com");
-           if (address != null) {
-               TestLoggerHolder.getLogger().info("✅ Internet detected. Downloading driver for: " + browserName);
-               String path = DriverDownloader.download(browserName.toLowerCase());
-               System.setProperty(systemPropertyKey, path);
-               return;
-           }
-       } catch (Exception e) {
-           TestLoggerHolder.getLogger().warn("⚠️ Online driver detection/download failed: " + e.getMessage(), e);
-       }
+      // 1️⃣ Attempt online driver download using your downloader (e.g.,
+      // WebDriverManager logic)
+      try {
+         InetAddress address = InetAddress.getByName("google.com");
+         if (address != null) {
+            TestLoggerHolder.getLogger().info("✅ Internet detected. Downloading driver for: " + browserName);
+            String path = DriverDownloader.download(browserName.toLowerCase());
+            System.setProperty(systemPropertyKey, path);
+            return;
+         }
+      } catch (Exception e) {
+         TestLoggerHolder.getLogger().warn("⚠️ Online driver detection/download failed: " + e.getMessage(), e);
+      }
 
-       // 2️⃣ Fallback: Load pre-bundled driver from test project /drivers folder
-       String userDir = System.getProperty("user.dir"); // This will point to the test project root
-       File localDriver = new File(userDir + File.separator + "drivers" + File.separator + driverFileName);
+      // 2️⃣ Fallback: Load pre-bundled driver from test project /drivers folder
+      String userDir = System.getProperty("user.dir"); // This will point to the test project root
+      File localDriver = new File(userDir + File.separator + "drivers" + File.separator + driverFileName);
 
-       if (!localDriver.exists()) {
-           throw new RuntimeException("❌ Offline mode: " + browserName + " driver not found at " + localDriver.getAbsolutePath());
-       }
+      if (!localDriver.exists()) {
+         throw new RuntimeException(
+               "❌ Offline mode: " + browserName + " driver not found at " + localDriver.getAbsolutePath());
+      }
 
-       System.setProperty(systemPropertyKey, localDriver.getAbsolutePath());
-       TestLoggerHolder.getLogger().info("📦 Local fallback " + browserName + " driver used from: " + localDriver.getAbsolutePath());
+      System.setProperty(systemPropertyKey, localDriver.getAbsolutePath());
+      TestLoggerHolder.getLogger()
+            .info("📦 Local fallback " + browserName + " driver used from: " + localDriver.getAbsolutePath());
    }
 
    /**
-    * Initialises the driver based on the specified browser
+    * Initializes the appropriate WebDriver based on configuration (Chrome,
+    * Firefox, Edge). Downloads the driver if online, or uses local fallback.
     */
    public static void initDriver() {
       if (driverThreadLocal.get() != null) {
@@ -133,16 +148,16 @@ public class DriverManager {
       RemoteWebDriver webDriver;
 
       switch (browser.toUpperCase()) {
-         case IConstants.FIREFOX:
-            webDriver = createFirefoxDriver();
-            break;
-         case IConstants.EDGE:
-            webDriver = createEdgeDriver();
-            break;
-         case IConstants.CHROME:
-         default:
-            webDriver = createChromeDriver();
-            break;
+      case IConstants.FIREFOX:
+         webDriver = createFirefoxDriver();
+         break;
+      case IConstants.EDGE:
+         webDriver = createEdgeDriver();
+         break;
+      case IConstants.CHROME:
+      default:
+         webDriver = createChromeDriver();
+         break;
       }
 
       driverThreadLocal.set(webDriver);
@@ -165,7 +180,7 @@ public class DriverManager {
       chromeOptions.addArguments(IGNORE_CERTIFICATE_ERRORS);
 
       if (BaseTestConfiguration.getHeadless().equalsIgnoreCase("true")) {
-           chromeOptions.addArguments("--headless=new");
+         chromeOptions.addArguments("--headless=new");
       }
 
       TestLoggerHolder.getLogger().info("Initilising Chromedriver...");
@@ -190,7 +205,7 @@ public class DriverManager {
       if (BaseTestConfiguration.getHeadless().equalsIgnoreCase("true")) {
          ffOptions.addArguments("--headless=new");
       }
-      
+
       TestLoggerHolder.getLogger().info("Initilising FirefoxDriver...");
       return createWebDriver(ffOptions);
    }
@@ -208,7 +223,7 @@ public class DriverManager {
       edgeOptions.addArguments(START_MAXIMISED);
       edgeOptions.addArguments(LANG_EN_GB);
       edgeOptions.addArguments(IGNORE_CERTIFICATE_ERRORS);
-      
+
       if (BaseTestConfiguration.getHeadless().equalsIgnoreCase("true")) {
          edgeOptions.addArguments("--headless=new");
       }
@@ -219,6 +234,7 @@ public class DriverManager {
 
    /**
     * Helper method to create WebDriver (Local or Selenium Grid)
+    * 
     * @param capabilities
     * @return
     */
@@ -226,33 +242,30 @@ public class DriverManager {
 
       if (options instanceof ChromeOptions) {
          return new ChromeDriver((ChromeOptions) options);
-      }
-      else if (options instanceof FirefoxOptions) {
+      } else if (options instanceof FirefoxOptions) {
          return new FirefoxDriver((FirefoxOptions) options);
-      }
-      else if (options instanceof EdgeOptions) {
+      } else if (options instanceof EdgeOptions) {
          return new EdgeDriver((EdgeOptions) options);
-      }
-      else {
+      } else {
          throw new IllegalArgumentException("Unsupported browser options");
       }
    }
 
    /**
-    * This method returns the current driver
-    * 
-    * @return the current driver
+    * Returns the current thread-local WebDriver instance.
+    * <p>
+    * If none exists, a new driver is initialized automatically.
+    *
+    * @return WebDriver instance for the current thread
     */
    public static RemoteWebDriver getCurrentDriver() {
       if (driverThreadLocal.get() == null) {
          TestLoggerHolder.getLogger().warn("Driver is not initialised - initialising now");
          initDriver();
-      }
-      else {
+      } else {
          try {
             driverThreadLocal.get().getTitle(); // Ensures the session is active
-         }
-         catch (Exception e) {
+         } catch (Exception e) {
             TestLoggerHolder.getLogger().warn("WebDriver session is stale. Reinitialising...");
             closeDriver(); // Close Stale instance
             initDriver(); // Reinitialise
@@ -289,7 +302,10 @@ public class DriverManager {
    }
 
    /**
-    * This method closes the driver for the current thread (if it exists)
+    * Closes all browser windows for the current thread and cleans up the driver
+    * instance.
+    * <p>
+    * Supports handling multiple tabs/windows.
     */
    public static void closeDriver() {
       TestLoggerHolder.getLogger().info("About to quit the driver");
@@ -306,23 +322,19 @@ public class DriverManager {
                }
                driverThreadLocal.get().switchTo().window(mainWindow);
                driverThreadLocal.get().close();
-            }
-            else {
+            } else {
                driverThreadLocal.get().quit();
             }
          } catch (Exception e) {
             TestLoggerHolder.getLogger().error("Error closing driver windows: " + e.getMessage());
-         }
-         finally {
+         } finally {
             driverThreadLocal.get().quit();
             driverThreadLocal.remove();
          }
-      }
-      else {
+      } else {
          TestLoggerHolder.getLogger().info("driverThreadLocal is null, cannot close driver.");
       }
    }
-
 
    /**
     * This method refreshes the page

@@ -14,8 +14,9 @@ import com.jcraft.jsch.Session;
 import constants.DateTimeFormatConstants;
 
 /**
- * SShUtils is a java program that connects to a remote server via ssh Executes a series of commands, and interacts with
- * the .ksh script by providing inputs and capturing outputs
+ * SShUtils is a java program that connects to a remote server via ssh Executes
+ * a series of commands, and interacts with the .ksh script by providing inputs
+ * and capturing outputs
  */
 
 public class SshUtils {
@@ -38,8 +39,8 @@ public class SshUtils {
    }
 
    /**
-    * This method creates the ssh connection, command and execution. It interacts with the mi_reports.ksh script by
-    * providing inputs
+    * This method creates the ssh connection, command and execution. It interacts
+    * with the mi_reports.ksh script by providing inputs
     * 
     * @param reportType  - The report type "SERCH_USERS"
     * @param reportLevel - Level the report is required for "National"
@@ -160,7 +161,7 @@ public class SshUtils {
 
          waitForOutput(in, "Running the report procedure process_mi_report");
          waitForOutput(in, "Report Ran successfully");
-      } 
+      }
    }
 
    /**
@@ -189,8 +190,8 @@ public class SshUtils {
       // Read output of the command
       byte[] buffer = new byte[1024];
       StringBuilder output = new StringBuilder();
-      TestLoggerHolder.getLogger().info("Waiting for prompt: {}",prompt);
-      Integer x=0;
+      TestLoggerHolder.getLogger().info("Waiting for prompt: {}", prompt);
+      Integer x = 0;
       while ((true)) {
          x++;
          while (in.available() > 0) {
@@ -200,31 +201,31 @@ public class SshUtils {
             String chunk = new String(buffer, 0, i);
             output.append(chunk);
          }
-         if (x==30) {TestLoggerHolder.getLogger().info("Prompt text received : {}",output);
-           throw new IOException("Stuck for 30 seconds waiting on prompt.");
+         if (x == 30) {
+            TestLoggerHolder.getLogger().info("Prompt text received : {}", output);
+            throw new IOException("Stuck for 30 seconds waiting on prompt.");
          }
-            
+
          if (output.toString().contains(prompt)) {
             out.write((input + "\n").getBytes());
             out.flush();
-            TestLoggerHolder.getLogger().info("Sent Text: {}",input);
+            TestLoggerHolder.getLogger().info("Sent Text: {}", input);
             return;
          }
          try {
-         Thread.sleep(1000);
+            Thread.sleep(1000);
          } catch (InterruptedException ex) {
             TestLoggerHolder.getLogger().info("Error: " + ex);
          }
       }
    }
 
-
-
    /**
     * This Method waits for an message to appear in the output
     * 
     * @param in              The input stream of the SSH channel.
-    * @param expectedMessage The message to wait for (e.g., "Report Ran successfully").
+    * @param expectedMessage The message to wait for (e.g., "Report Ran
+    *                        successfully").
     * @throws IOException Read/Write Exception
     */
    private static void waitForOutput(InputStream in, String expectedMessage) throws IOException {
@@ -247,6 +248,5 @@ public class SshUtils {
          }
       }
    }
-
 
 }

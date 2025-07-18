@@ -10,6 +10,13 @@ public class App {
    private static final Logger LOG = LogManager.getLogger(App.class);
 
    /**
+    * Default constructor.
+    */
+   public App() {
+      // no-op
+   }
+
+   /**
     * This method is a dummy method just used so that sonar actually scans
     * 
     * @param args This should always be a blank string array

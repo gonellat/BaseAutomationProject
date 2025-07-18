@@ -18,7 +18,8 @@ public class FilePathConstants {
    public static final String USER_DIR = "user.dir";
 
    /** DATAPATH Constant **/
-   public static final String DATAPATH = System.getProperty(USER_DIR).concat(File.separator).concat("src").concat(File.separator)
-         .concat("test").concat(File.separator).concat("resources").concat(File.separator).concat("data").concat(File.separator);
-   
+   public static final String DATAPATH = System.getProperty(USER_DIR).concat(File.separator).concat("src")
+         .concat(File.separator).concat("test").concat(File.separator).concat("resources").concat(File.separator)
+         .concat("data").concat(File.separator);
+
 }

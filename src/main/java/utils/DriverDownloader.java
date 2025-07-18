@@ -26,6 +26,13 @@ public class DriverDownloader {
    private static final String CFT_JSON_URL = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json";
 
    /**
+    * Default constructor.
+    */
+   public DriverDownloader() {
+      // no-op
+   }
+
+   /**
     * Resolves and configures the appropriate WebDriver for the specified browser.
     * <p>
     * Detects the installed browser version (locally or on CI), determines the
@@ -353,7 +360,7 @@ public class DriverDownloader {
                return output.replaceAll("[^0-9.]", "").trim();
             }
          } catch (Exception ignored) {
-        	 TestLoggerHolder.getLogger().info("Ignore");
+            TestLoggerHolder.getLogger().info("Ignore");
          }
       }
 
@@ -397,7 +404,7 @@ public class DriverDownloader {
             }
 
             public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                TestLoggerHolder.getLogger().info("Not Required");
+               TestLoggerHolder.getLogger().info("Not Required");
             }
          } };
          SSLContext sc = SSLContext.getInstance("TLS");

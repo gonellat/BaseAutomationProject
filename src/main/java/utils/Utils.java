@@ -1,7 +1,6 @@
 package utils;
 
 import java.security.SecureRandom;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,8 @@ public class Utils {
    static final SecureRandom rand = new SecureRandom();
 
    /**
-    * This method creates a new unique string based on todays date with a given format
+    * This method creates a new unique string based on todays date with a given
+    * format
     * 
     * @param format String DateTime format
     * @return the Current Date Time
@@ -64,7 +64,8 @@ public class Utils {
    }
 
    /**
-    * This utility method take a string xml document number e.g. "first" and translates it into an integer
+    * This utility method take a string xml document number e.g. "first" and
+    * translates it into an integer
     * 
     * @param whichDoc The String version of the xml doc to use
     * @return an integer for the index of which xml document to use
@@ -80,7 +81,6 @@ public class Utils {
       }
       return whichDocInt;
    }
-
 
    /**
     * This method converts elements into a document
@@ -110,11 +110,11 @@ public class Utils {
     * Compares two maps and returns a list of differences
     * 
     * @param expectedMap This is the expected data to compare against
-    * @param actualMap This is the actual ui data
-    * @throws ParseException Date Parse Exception
+    * @param actualMap   This is the actual ui data
     * @return A list of differences (if any)
     */
-   public static List<String> compareActualExpectedDataMaps(Map<String, String> expectedMap, Map<String, String> actualMap) {
+   public static List<String> compareActualExpectedDataMaps(Map<String, String> expectedMap,
+         Map<String, String> actualMap) {
       List<String> differences = new ArrayList<>();
 
       // Normalise both expected and actual maps for consistent comparison
@@ -122,15 +122,15 @@ public class Utils {
       Map<String, String> normalisedActualMap = normaliseMap(actualMap);
 
       // Compare expected keys and values against actual map
-      for (Map.Entry<String, String> expectedEntry: normalisedExpectedMap.entrySet()) {
+      for (Map.Entry<String, String> expectedEntry : normalisedExpectedMap.entrySet()) {
          String key = expectedEntry.getKey();
          String expectedValue = expectedEntry.getValue();
 
          // Handle NOT PRESENT and NODATA
-         if ("NOTPRESENT".equals(expectedValue) || "NODATA".equals(expectedValue) ) {
+         if ("NOTPRESENT".equals(expectedValue) || "NODATA".equals(expectedValue)) {
             continue;
          }
-         
+
          // Check for missing keys in actual map
          if (!normalisedActualMap.containsKey(key)) {
             differences.add("Missing Key In Actual data: " + getOriginalKey(expectedMap, key));
@@ -141,10 +141,10 @@ public class Utils {
 
          // Handle special case for date comparison "reporteddate"
          if ("reporteddate".equalsIgnoreCase(key)) {
-            // Get the date part from a string 
+            // Get the date part from a string
             expectedValue = DateUtils.returnDynamicStringDate(expectedValue, DateTimeFormatConstants.DDMMYYYY);
          }
-  
+
          if (!(expectedValue.equals(actualValue) || actualValue.matches(expectedValue))) {
             differences.add("Value mismatch for key: [" + getOriginalKey(expectedMap, key) + "] - expected: ["
                   + expectedValue + "], but found [" + actualValue + "]");
@@ -160,12 +160,11 @@ public class Utils {
       return differences;
    }
 
-
    /**
     * Normalises a map by converting its keys using a utility method
     * 
     * @param map The input map with orginal keys
-    * @return  A new map with normalised keys
+    * @return A new map with normalised keys
     */
    private static Map<String, String> normaliseMap(Map<String, String> map) {
       Map<String, String> normalised = new HashMap<>();
@@ -180,18 +179,17 @@ public class Utils {
     * Retrieves the original key from a map, given a normalised key
     * 
     * @param originalMap The original map
-    * @param normKey The normalised key
+    * @param normKey     The normalised key
     * @return The matching original key if found, else returns the normalised key
     */
    private static String getOriginalKey(Map<String, String> originalMap, String normKey) {
-      return originalMap.keySet().stream()
-            .filter(k -> Utils.normaliseKey(k).equals(normKey))
-            .findFirst()
+      return originalMap.keySet().stream().filter(k -> Utils.normaliseKey(k).equals(normKey)).findFirst()
             .orElse(normKey);
    }
 
    /**
-    * Method to normalise a key (String) by removing all whitespace and converting to lowercase
+    * Method to normalise a key (String) by removing all whitespace and converting
+    * to lowercase
     * 
     * @param key The original Key (or String)
     * @return A normalised version of the key (String)

@@ -13,6 +13,13 @@ public class EndPoints {
    private static final String LINE_BREAK = "====================";
 
    /**
+    * Default constructor.
+    */
+   public EndPoints() {
+      // no-op
+   }
+
+   /**
     * This method uses RESTAssured to send a "POST" request and return the response
     * 
     * @param uri  The uri of API to call
@@ -24,11 +31,13 @@ public class EndPoints {
       TestLoggerHolder.getLogger().info("Starting Post");
       TestLoggerHolder.getLogger().info(LINE_BREAK);
 
-      return given().relaxedHTTPSValidation().header("Content-Type", ContentType.XML).log().params().body(body).post(uri);
+      return given().relaxedHTTPSValidation().header("Content-Type", ContentType.XML).log().params().body(body)
+            .post(uri);
    }
 
    /**
-    * This method uses RESTAssured to send a "GET" a request and return the response
+    * This method uses RESTAssured to send a "GET" a request and return the
+    * response
     * 
     * @param uri the uri of the api
     * @return the response form the get request

@@ -42,16 +42,16 @@ public class DbUtils {
       }
    }
 
-
    /**
     * Get the connection of the db
+    * 
     * @return
     */
    private static Connection getDbFileConnection() {
       return null;
-}
+   }
 
-/**
+   /**
     * This method gets a file content into a string and returns it
     * 
     * @param fileName The filename of the file that has the required sql
@@ -68,7 +68,8 @@ public class DbUtils {
    /**
     * This method runs and sql query against the given database
     * 
-    * @param db  This is the database we want to connect to and execute the sql - either FILE, ABCD or SEARCH
+    * @param db  This is the database we want to connect to and execute the sql -
+    *            either FILE, ABCD or SEARCH
     * @param sql The SQL for select queries
     * @return The index status
     */
@@ -77,7 +78,8 @@ public class DbUtils {
       ResultSet resultSet = null;
       List<Map<String, Object>> rows = new ArrayList<>();
 
-      try (Connection connection = getDbConnection(db); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      try (Connection connection = getDbConnection(db);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
          resultSet = preparedStatement.executeQuery();
 
          ResultSetMetaData metaData = resultSet.getMetaData();
@@ -97,16 +99,19 @@ public class DbUtils {
    }
 
    /**
-    * This method runs an update/delete/insert statement against the given database.
+    * This method runs an update/delete/insert statement against the given
+    * database.
     * 
-    * @param db  This is the database we want to connect to and execute the sql - either FILE, ABCD or SEARCH
+    * @param db  This is the database we want to connect to and execute the sql -
+    *            either FILE, ABCD or SEARCH
     * @param sql The SQL for update queries
     * @return integer of the number of rows affected
     */
    public static int executeUpdate(String db, String sql) {
       TestLoggerHolder.getLogger().info(sql);
       int rowsAffected = 0;
-      try (Connection connection = getDbConnection(db); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      try (Connection connection = getDbConnection(db);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
          rowsAffected = preparedStatement.executeUpdate();
          TestLoggerHolder.getLogger().info("preparedStatement has run");
       } catch (SQLException e) {

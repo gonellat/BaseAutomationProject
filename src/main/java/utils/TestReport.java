@@ -27,13 +27,18 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import constants.IConstants;
 
 /**
- * This class initializes the Extent Report and logs the status/info of each
- * test case/step
+ * Central reporting utility to create, manage, and flush Extent test nodes, log
+ * messages, capture results in Excel, and link logs into HTML reports.
  */
 public class TestReport {
 
-   // This class is currently set up to use the extent plugin version -
-   // extentreports-cucumber6-adapter - v2.13.0
+   /**
+    * Constructs the TestReport utility class used for test result tracking and
+    * reporting.
+    */
+   public TestReport() {
+      // default constructor
+   }
 
    private static ExtentReports extent;
    private static ThreadLocal<ExtentTest> currentTest;
@@ -117,41 +122,42 @@ public class TestReport {
          header.createCell(4).setCellValue("Browser");
          writeOutResults(wb);
       } catch (RuntimeException rte) {
-          // Fail hard with useful info
-          throw new RuntimeException("❌ Failed to write Excel report — likely because no Extent report folders exist yet.\n"
-                  + "Expected in: " + System.getProperty("user.dir") + "/target/NewStyleReports", rte);
+         // Fail hard with useful info
+         throw new RuntimeException(
+               "❌ Failed to write Excel report — likely because no Extent report folders exist yet.\n"
+                     + "Expected in: " + System.getProperty("user.dir") + "/target/NewStyleReports",
+               rte);
       } catch (IOException e) {
-          logExceptionMessage(e);
+         logExceptionMessage(e);
       }
    }
 
    /**
-    * This method gets the filepath of the latest report
-    * @return
+    * Returns the folder path of the current Extent report.
+    *
+    * @return the absolute path to the latest report folder
     */
    public static String getLatestExtentReportFolder() {
-	    String testProjectDir = System.getProperty("user.dir");
-	    File baseDir = new File(testProjectDir, "target/NewStyleReports");
+      String testProjectDir = System.getProperty("user.dir");
+      File baseDir = new File(testProjectDir, "target/NewStyleReports");
 
-	    if (!baseDir.exists()) {
-	        boolean created = baseDir.mkdirs();
-	        if (!created) {
-	            throw new RuntimeException("❌ Could not create reports folder: " + baseDir.getAbsolutePath());
-	        }
-	    }
+      if (!baseDir.exists()) {
+         boolean created = baseDir.mkdirs();
+         if (!created) {
+            throw new RuntimeException("❌ Could not create reports folder: " + baseDir.getAbsolutePath());
+         }
+      }
 
-	    File[] dirs = baseDir.listFiles(File::isDirectory);
+      File[] dirs = baseDir.listFiles(File::isDirectory);
 
-	    if (dirs == null || dirs.length == 0) {
-	        // ✅ No subfolders yet — return the base dir itself to avoid exception
-	        return baseDir.getAbsolutePath();
-	    }
+      if (dirs == null || dirs.length == 0) {
+         // ✅ No subfolders yet — return the base dir itself to avoid exception
+         return baseDir.getAbsolutePath();
+      }
 
-	    Arrays.sort(dirs, Comparator.comparing(File::lastModified).reversed());
-	    return dirs[0].getAbsolutePath();
-	}
-
-
+      Arrays.sort(dirs, Comparator.comparing(File::lastModified).reversed());
+      return dirs[0].getAbsolutePath();
+   }
 
    /**
     * This method writes out the excel result report to the reports location

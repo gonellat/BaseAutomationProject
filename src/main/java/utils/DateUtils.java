@@ -21,10 +21,13 @@ import constants.DateTimeFormatConstants;
 
 /**
  * This class contains various ways to manipulate date/times.<br>
- * Please note to help ensure any date/time manipulations don't fall foul of any clock change boundaries, i.e. switching
- * to BST, all date/time manipulations need to be done using ZonedDateTime objects. And any storing of date/times in the
- * DB should be done with OffsetDateTime to ensure they retain a constant value over time, see
- * https://springframework.guru/convert-offsetdatetime-to-zoneddatetime/ for one explanation why.
+ * Please note to help ensure any date/time manipulations don't fall foul of any
+ * clock change boundaries, i.e. switching to BST, all date/time manipulations
+ * need to be done using ZonedDateTime objects. And any storing of date/times in
+ * the DB should be done with OffsetDateTime to ensure they retain a constant
+ * value over time, see
+ * https://springframework.guru/convert-offsetdatetime-to-zoneddatetime/ for one
+ * explanation why.
  */
 public class DateUtils {
 
@@ -44,7 +47,8 @@ public class DateUtils {
 
    /**
     * This method gets today's current dateTime +/- as a ZonedDateTime object.<br>
-    * <strong>NB: </strong>The time zone is currently hard-coded to "Europe/London".<br>
+    * <strong>NB: </strong>The time zone is currently hard-coded to
+    * "Europe/London".<br>
     * 
     * @return The current dateTime +/- as a ZonedDateTime object
     */
@@ -53,14 +57,17 @@ public class DateUtils {
       ZoneId zoneId = ZoneId.of(EUROPE_LONDON);
       ZonedDateTime zonedDateTime = currentDateTime.atZone(zoneId);
 
-      TestLoggerHolder.getLogger().info(String.format(
-            String.format("The current date / time value in the generated ZonedDateTime object is = '%1$s'.", zonedDateTime.toString())));
+      TestLoggerHolder.getLogger()
+            .info(String.format(String.format(
+                  "The current date / time value in the generated ZonedDateTime object is = '%1$s'.",
+                  zonedDateTime.toString())));
 
       return zonedDateTime;
    }
 
    /**
-    * This method gets today's dateTime and returns the string in the format requested.
+    * This method gets today's dateTime and returns the string in the format
+    * requested.
     * 
     * @param dateTimeFormat The dateTime formatting string
     * @return The current dateTime
@@ -69,7 +76,8 @@ public class DateUtils {
       DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(dateTimeFormat, Locale.UK);
       String formattedCurrentDateTime = getCurrentZonedDateTime().format(dateTimeformatter);
 
-      TestLoggerHolder.getLogger().info(String.format("The current date / time generated using the specified format is = '%1$s'.", formattedCurrentDateTime));
+      TestLoggerHolder.getLogger().info(String.format(
+            "The current date / time generated using the specified format is = '%1$s'.", formattedCurrentDateTime));
 
       return formattedCurrentDateTime;
    }
@@ -79,7 +87,8 @@ public class DateUtils {
     * 
     * @param dateTime       This is the date(time) to be modified
     * @param dataTimeFormat - This is the required date time format
-    * @param years          This is the number of years to add or remove from the date
+    * @param years          This is the number of years to add or remove from the
+    *                       date
     * @return date today +/- years
     */
    public static String getDatePlusOrMinusYears(ZonedDateTime dateTime, String dataTimeFormat, int years) {
@@ -88,7 +97,8 @@ public class DateUtils {
       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dataTimeFormat, Locale.UK);
       String formattedModifiedZonedDateTime = modifiedZonedDateTime.format(dateTimeFormatter);
 
-      TestLoggerHolder.getLogger().info("After adjusting by the specified number of months {} the adjusted dateTime is = {}.", years,
+      TestLoggerHolder.getLogger().info(
+            "After adjusting by the specified number of months {} the adjusted dateTime is = {}.", years,
             formattedModifiedZonedDateTime);
 
       return formattedModifiedZonedDateTime;
@@ -99,7 +109,8 @@ public class DateUtils {
     * 
     * @param dateTime       This is the date(time) to be modified
     * @param dataTimeFormat - This is the required date time format
-    * @param months         This is the number of months to add or remove from the date
+    * @param months         This is the number of months to add or remove from the
+    *                       date
     * @return date today +/- months
     */
    public static String getDatePlusOrMinusMonths(ZonedDateTime dateTime, String dataTimeFormat, int months) {
@@ -108,7 +119,8 @@ public class DateUtils {
       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dataTimeFormat, Locale.UK);
       String formattedModifiedZonedDateTime = modifiedZonedDateTime.format(dateTimeFormatter);
 
-      TestLoggerHolder.getLogger().info("After adjusting by the specified number of months {} the adjusted dateTime is = {}.", months,
+      TestLoggerHolder.getLogger().info(
+            "After adjusting by the specified number of months {} the adjusted dateTime is = {}.", months,
             formattedModifiedZonedDateTime);
 
       return formattedModifiedZonedDateTime;
@@ -119,7 +131,8 @@ public class DateUtils {
     * 
     * @param dateTime       This is the date(time) to be modified
     * @param dataTimeFormat - This is the required date time format
-    * @param days           This is the number of days to add or remove from the date
+    * @param days           This is the number of days to add or remove from the
+    *                       date
     * @return date today +/- days
     */
    public static String getDatePlusOrMinusDays(ZonedDateTime dateTime, String dataTimeFormat, int days) {
@@ -128,17 +141,20 @@ public class DateUtils {
       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dataTimeFormat, Locale.UK);
       String formattedModifiedZonedDateTime = modifiedZonedDateTime.format(dateTimeFormatter);
 
-      TestLoggerHolder.getLogger().info("After adjusting by the specified number of days '%1$s' the adjusted dateTime is = '%2$s'.", days,
+      TestLoggerHolder.getLogger().info(
+            "After adjusting by the specified number of days '%1$s' the adjusted dateTime is = '%2$s'.", days,
             formattedModifiedZonedDateTime);
 
       return formattedModifiedZonedDateTime;
    }
 
    /**
-    * This method calls a method to add or subtracts months or days from a string date or converts the string date to the
-    * provided format returning a string value of the date
+    * This method calls a method to add or subtracts months or days from a string
+    * date or converts the string date to the provided format returning a string
+    * value of the date
     * 
-    * @param dateToModify - The date that needs modifying e.g. TODAY+1Day or 12/04/2024-2Years or TODAY
+    * @param dateToModify - The date that needs modifying e.g. TODAY+1Day or
+    *                     12/04/2024-2Years or TODAY
     * @param format       - the datetime format eg. dd/mm/yyyy
     * @return date in the format requested +/- days/months/years
     */
@@ -148,7 +164,8 @@ public class DateUtils {
       dateToModify = dateToModify.toUpperCase();
       TestLoggerHolder.getLogger().info("The original date to modify is:" + dateToModify);
 
-      // If the string contains + or - add or subtract the right days/months or years otherwise it is just "TODAY" or a given
+      // If the string contains + or - add or subtract the right days/months or years
+      // otherwise it is just "TODAY" or a given
       // date
       if (dateToModify.contains("+") || dateToModify.contains("-")) {
          modifiedZonedDateTimeString = addOrRemoveYearsMonthsDays(dateToModify, format);
@@ -163,13 +180,15 @@ public class DateUtils {
    }
 
    /**
-    * This method takes a todays date and either adds or subtracts months or days from it returning a string value of the
-    * date
+    * This method takes a todays date and either adds or subtracts months or days
+    * from it returning a string value of the date
     * 
-    * @param dateToModify - The date that needs modifying e.g. TODAY+1Day or 12/04/2024-2Years or TODAY
+    * @param dateToModify - The date that needs modifying e.g. TODAY+1Day or
+    *                     12/04/2024-2Years or TODAY
     * @param format       - the datetime format eg. dd/mm/yyyy
     * @return date in the format requested +/- days/months/years
-    * @throws ParseException Exception if the dateToModify is in the incorrect format
+    * @throws ParseException Exception if the dateToModify is in the incorrect
+    *                        format
     */
    private static String addOrRemoveYearsMonthsDays(String dateToModify, String format) {
 
@@ -212,14 +231,16 @@ public class DateUtils {
 
       // if the dateToModify contains TODAY, replace it with todays date
       if (dateToModify.contains(DateTimeFormatConstants.TODAY)) {
-         dateToModify = dateToModify.replace(DateTimeFormatConstants.TODAY, getCurrentDateTime(DateTimeFormatConstants.DDMMYYYYDASHES));
+         dateToModify = dateToModify.replace(DateTimeFormatConstants.TODAY,
+               getCurrentDateTime(DateTimeFormatConstants.DDMMYYYYDASHES));
       }
 
       // Normalize case by converting everything to lowercase
       String normalizedDate = dateToModify.toLowerCase();
 
       if (normalizedDate.contains(DateTimeFormatConstants.TODAY.toLowerCase())) {
-         normalizedDate = normalizedDate.replace(DateTimeFormatConstants.TODAY.toLowerCase(), getCurrentDateTime(DateTimeFormatConstants.DDMMYYYYDASHES));
+         normalizedDate = normalizedDate.replace(DateTimeFormatConstants.TODAY.toLowerCase(),
+               getCurrentDateTime(DateTimeFormatConstants.DDMMYYYYDASHES));
       }
 
       // Remove modification parts (e.g. +1Month)
@@ -245,10 +266,11 @@ public class DateUtils {
    }
 
    /**
-    * Parses the base date (without modifications) into a ZonedDateTime object Ensures a proper time component (T00:00:00Z)
-    * if missing
+    * Parses the base date (without modifications) into a ZonedDateTime object
+    * Ensures a proper time component (T00:00:00Z) if missing
     * 
-    * @param dateToModify The date string with possible modifications (e.g. 13/02/2024 + 1 year)
+    * @param dateToModify The date string with possible modifications (e.g.
+    *                     13/02/2024 + 1 year)
     * @return A ZonedDateTime object representing the parsed date
     */
    private static ZonedDateTime parseDateWithTimeZone(String dateToModify) {
@@ -286,7 +308,8 @@ public class DateUtils {
     * @return The extracted modification amount
     */
    private static String extractModifyAmount(String dateToModify) {
-      String modifyAmount = dateToModify.replace(DateTimeFormatConstants.TODAY, "").replace(extractBaseDate(dateToModify), "").trim();
+      String modifyAmount = dateToModify.replace(DateTimeFormatConstants.TODAY, "")
+            .replace(extractBaseDate(dateToModify), "").trim();
       TestLoggerHolder.getLogger().info("modifyAmount:" + modifyAmount);
       return modifyAmount;
    }
@@ -344,7 +367,8 @@ public class DateUtils {
          TestLoggerHolder.getLogger().info("Parsed value:" + value + " for type:" + type);
          return value;
       } else {
-         TestLoggerHolder.getLogger().warn("No valid modification value found for type: " + type + " in string: " + modifyByAmount);
+         TestLoggerHolder.getLogger()
+               .warn("No valid modification value found for type: " + type + " in string: " + modifyByAmount);
          throw new IllegalArgumentException("Invalid modification format:" + modifyByAmount);
       }
    }
@@ -364,7 +388,8 @@ public class DateUtils {
    }
 
    /**
-    * This method calculates whether 2 dates times are with 'tolerance' minutes of each other
+    * This method calculates whether 2 dates times are with 'tolerance' minutes of
+    * each other
     * 
     * @param tolerance        - the allows time difference in minutes allowed
     * @param pattern          - the format of the date time strings
@@ -372,8 +397,8 @@ public class DateUtils {
     * @param actualDateTime   - the actual dateTime
     * @return boolean if the datetime is within the allowable limit
     */
-   public static boolean isStringDateTimeWithinMinutesOfAnotherStringDateTime(int tolerance, String pattern, String expectedDateTime,
-         String actualDateTime) {
+   public static boolean isStringDateTimeWithinMinutesOfAnotherStringDateTime(int tolerance, String pattern,
+         String expectedDateTime, String actualDateTime) {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern).withZone(ZoneOffset.UTC);
       ZonedDateTime expected = ZonedDateTime.parse(expectedDateTime, formatter);
       ZonedDateTime actual = ZonedDateTime.parse(actualDateTime, formatter);
@@ -394,8 +419,8 @@ public class DateUtils {
     * @return The string date in a the new format
     * @throws ParseException ParseException if date cannot be parsed
     */
-   public static String convertDateStringToDifferentFormat(String date, String dateTimeFormat, String newDateTimeFormat)
-         throws ParseException {
+   public static String convertDateStringToDifferentFormat(String date, String dateTimeFormat,
+         String newDateTimeFormat) throws ParseException {
       SimpleDateFormat format1 = new SimpleDateFormat(dateTimeFormat);
       SimpleDateFormat format2 = new SimpleDateFormat(newDateTimeFormat);
       Date dateConverted = format1.parse(date);
@@ -437,14 +462,16 @@ public class DateUtils {
     * @return current time in the format HH:mm
     */
    public static String getCurrentTime() {
-      String currentDateTime = DateUtils.adjustDate(DateTimeFormatConstants.TODAY, DateTimeFormatConstants.DDMMYYYYHHMM);
+      String currentDateTime = DateUtils.adjustDate(DateTimeFormatConstants.TODAY,
+            DateTimeFormatConstants.DDMMYYYYHHMM);
       String currentTime = currentDateTime.substring(currentDateTime.indexOf(" ") + 1);
       TestLoggerHolder.getLogger().info("currentTime:" + currentTime);
       return currentTime;
    }
 
    /**
-    * Removes the time portion from a datetime string formatted as dd/MM/yyyy HH;mm:ss
+    * Removes the time portion from a datetime string formatted as dd/MM/yyyy
+    * HH;mm:ss
     * 
     * @param dateTime The full date time
     * @return The date without the time
@@ -455,21 +482,22 @@ public class DateUtils {
       }
       return dateTime.split(" ")[0]; // Keep only the date portion
    }
-   
+
    /**
-    * This method either 
-    *   1) Finds the string between # symbols then calls adjustDate to find the right date.  
-    *      Returns the full string with and actual date
-    *   2) If no # symbols are found just returns the adjusted date
+    * This method either 1) Finds the string between # symbols then calls
+    * adjustDate to find the right date. Returns the full string with and actual
+    * date 2) If no # symbols are found just returns the adjusted date
     * 
-    * @param input The original String e.g. The Report Date is #TODAY-2Months# 12:00" or TODAY
+    * @param input      The original String e.g. The Report Date is #TODAY-2Months#
+    *                   12:00" or TODAY
     * @param dateFormat The expected output date format
-    * @return The updated string with the date expression replaced by its formatted value.
+    * @return The updated string with the date expression replaced by its formatted
+    *         value.
     */
    public static String returnDynamicStringDate(String input, String dateFormat) {
       Pattern pattern = Pattern.compile("#([^#]+)#");
       Matcher matcher = pattern.matcher(input);
-      
+
       if (matcher.find()) {
          // Extract substring without '#' characters
          String dateExpression = matcher.group(1);
@@ -477,43 +505,45 @@ public class DateUtils {
          String formattedDate = DateUtils.adjustDate(dateExpression, dateFormat);
          // Replace the first occurrence of the the pattern with the formatted date
          return matcher.replaceFirst(formattedDate);
-      }
-      else {
+      } else {
          return DateUtils.adjustDate(input, dateFormat);
       }
    }
 
    /**
-    * This method adjusts a UI date string by subtracting one day if the given date falls under British Summer Time (BST)
+    * This method adjusts a UI date string by subtracting one day if the given date
+    * falls under British Summer Time (BST)
     * 
-    * @param uiDateString The date string from the UI (expected in the format 'dd/MM/yyyy'
-    * @return A date string in 'dd/MM/yyyy', adjusted to match the database format which is GMT
-    * @throws IllegalArgumentException if the input date string is null, empty or not in the expected format
+    * @param uiDateString The date string from the UI (expected in the format
+    *                     'dd/MM/yyyy'
+    * @return A date string in 'dd/MM/yyyy', adjusted to match the database format
+    *         which is GMT
+    * @throws IllegalArgumentException if the input date string is null, empty or
+    *                                  not in the expected format
     */
    public static String adjustUIDateForBST(String uiDateString) throws IllegalArgumentException {
-      
-     if (uiDateString == null || uiDateString.isEmpty()) {
-        throw new IllegalArgumentException ("uiDateString cannot be null or empty");
-     }
-   
-     try {
-        // Parse incoming string to LocalDate
-        LocalDate uiDate = LocalDate.parse(uiDateString, DateTimeFormatter.ofPattern(DateTimeFormatConstants.DDMMYYYY));
-        
-        // Determine the timezone offset for the UI date in London Timezone
-        ZoneId londonZone = ZoneId.of(EUROPE_LONDON);
-        ZonedDateTime zonedDate = uiDate.atStartOfDay(londonZone);
-        ZoneOffset offset = zonedDate.getOffset();
-        
-        if (offset.equals(ZoneOffset.ofHours(1))) {
-           return uiDate.minusDays(1).format(DateTimeFormatter.ofPattern(DateTimeFormatConstants.DDMMYYYY));
-        }
-        else {
-           return uiDate.format(DateTimeFormatter.ofPattern(DateTimeFormatConstants.DDMMYYYY));
-        }
-     }
-     catch (DateTimeParseException e) {
-        throw new IllegalArgumentException ("Invalid UI date Format. Expected dd/MM/yyyy, got: " + uiDateString, e);
-     }
+
+      if (uiDateString == null || uiDateString.isEmpty()) {
+         throw new IllegalArgumentException("uiDateString cannot be null or empty");
+      }
+
+      try {
+         // Parse incoming string to LocalDate
+         LocalDate uiDate = LocalDate.parse(uiDateString,
+               DateTimeFormatter.ofPattern(DateTimeFormatConstants.DDMMYYYY));
+
+         // Determine the timezone offset for the UI date in London Timezone
+         ZoneId londonZone = ZoneId.of(EUROPE_LONDON);
+         ZonedDateTime zonedDate = uiDate.atStartOfDay(londonZone);
+         ZoneOffset offset = zonedDate.getOffset();
+
+         if (offset.equals(ZoneOffset.ofHours(1))) {
+            return uiDate.minusDays(1).format(DateTimeFormatter.ofPattern(DateTimeFormatConstants.DDMMYYYY));
+         } else {
+            return uiDate.format(DateTimeFormatter.ofPattern(DateTimeFormatConstants.DDMMYYYY));
+         }
+      } catch (DateTimeParseException e) {
+         throw new IllegalArgumentException("Invalid UI date Format. Expected dd/MM/yyyy, got: " + uiDateString, e);
+      }
    }
 }
