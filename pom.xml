@@ -1,299 +1,308 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>cgi.com.automation</groupId>
-    <artifactId>BaseAutomationFramework</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>BaseAutomationFramework</name>
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>cgi.com.automation</groupId>
+   <artifactId>BaseAutomationFramework</artifactId>
+   <version>0.0.1-SNAPSHOT</version>
+   <packaging>jar</packaging>
+   <name>BaseAutomationFramework</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
 
-    <dependencies>
-        <!--
-        https://mvnrepository.com/artifact/tech.grasshopper/extentreports-cucumber7-adapter -->
-        <dependency>
-            <groupId>tech.grasshopper</groupId>
-            <artifactId>extentreports-cucumber7-adapter</artifactId>
-            <version>1.14.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>7.24.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-testng -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-testng</artifactId>
-            <version>7.24.0</version>
-        </dependency>
-        <!--
+   <dependencies>
+      <!--
+      https://mvnrepository.com/artifact/tech.grasshopper/extentreports-cucumber7-adapter -->
+      <dependency>
+         <groupId>tech.grasshopper</groupId>
+         <artifactId>extentreports-cucumber7-adapter</artifactId>
+         <version>1.14.0</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+      <dependency>
+         <groupId>io.cucumber</groupId>
+         <artifactId>cucumber-java</artifactId>
+         <version>7.24.0</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-testng -->
+      <dependency>
+         <groupId>io.cucumber</groupId>
+         <artifactId>cucumber-testng</artifactId>
+         <version>7.24.0</version>
+      </dependency>
+      <!--
       https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.34.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-devtools-v130</artifactId>
-            <version>4.28.1</version>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>json-path</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>xml-path</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>json-schema-validator</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.26</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
-        <dependency>
-            <groupId>com.aventstack</groupId>
-            <artifactId>extentreports</artifactId>
-            <version>5.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-core</artifactId>
-            <version>3.4.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.datafaker</groupId>
-            <artifactId>datafaker</artifactId>
-            <version>2.4.4</version> <!-- or latest -->
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.11.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.11</version>
-            <exclusions>
-                <!-- This duplicates javax.xml.XMLConstants which is built in to
+      <dependency>
+         <groupId>org.seleniumhq.selenium</groupId>
+         <artifactId>selenium-java</artifactId>
+         <version>4.34.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.seleniumhq.selenium</groupId>
+         <artifactId>selenium-devtools-v130</artifactId>
+         <version>4.28.1</version>
+      </dependency>
+      <dependency>
+         <groupId>io.rest-assured</groupId>
+         <artifactId>rest-assured</artifactId>
+         <version>5.3.1</version>
+      </dependency>
+      <dependency>
+         <groupId>io.rest-assured</groupId>
+         <artifactId>json-path</artifactId>
+         <version>5.3.1</version>
+      </dependency>
+      <dependency>
+         <groupId>io.rest-assured</groupId>
+         <artifactId>xml-path</artifactId>
+         <version>5.3.1</version>
+      </dependency>
+      <dependency>
+         <groupId>io.rest-assured</groupId>
+         <artifactId>json-schema-validator</artifactId>
+         <version>5.3.1</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.logging.log4j</groupId>
+         <artifactId>log4j-core</artifactId>
+         <version>2.20.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.logging.log4j</groupId>
+         <artifactId>log4j-slf4j-impl</artifactId>
+         <version>2.20.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.pdfbox</groupId>
+         <artifactId>pdfbox</artifactId>
+         <version>2.0.26</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+      <dependency>
+         <groupId>com.aventstack</groupId>
+         <artifactId>extentreports</artifactId>
+         <version>5.1.2</version>
+      </dependency>
+      <dependency>
+         <groupId>org.mongodb</groupId>
+         <artifactId>mongodb-driver-core</artifactId>
+         <version>3.4.0</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
+      <dependency>
+         <groupId>org.hamcrest</groupId>
+         <artifactId>hamcrest</artifactId>
+         <version>3.0</version>
+      </dependency>
+      <dependency>
+         <groupId>net.datafaker</groupId>
+         <artifactId>datafaker</artifactId>
+         <version>2.4.4</version> <!-- or latest -->
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <version>7.11.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.poi</groupId>
+         <artifactId>poi</artifactId>
+         <version>3.11</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.poi</groupId>
+         <artifactId>poi-ooxml</artifactId>
+         <version>3.11</version>
+         <exclusions>
+            <!-- This duplicates javax.xml.XMLConstants which is built in to
             java -->
-                <exclusion>
-                    <groupId>stax</groupId>
-                    <artifactId>stax-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--
+            <exclusion>
+               <groupId>stax</groupId>
+               <artifactId>stax-api</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <!--
       https://mvnrepository.com/artifact/io.cucumber/cucumber-picocontainer -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-picocontainer</artifactId>
-            <version>7.24.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.5</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.13.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.16.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>5.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>2.5.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.54</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-    </dependencies>
+      <dependency>
+         <groupId>io.cucumber</groupId>
+         <artifactId>cucumber-picocontainer</artifactId>
+         <version>7.24.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.google.code.gson</groupId>
+         <artifactId>gson</artifactId>
+         <version>2.8.5</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+      <dependency>
+         <groupId>commons-io</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>2.13.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jsoup</groupId>
+         <artifactId>jsoup</artifactId>
+         <version>1.16.1</version>
+      </dependency>
+      <dependency>
+         <groupId>org.postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+         <version>42.6.0</version>
+      </dependency>
+      <dependency>
+         <groupId>com.opencsv</groupId>
+         <artifactId>opencsv</artifactId>
+         <version>5.8</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-core</artifactId>
+         <version>2.5.6</version>
+      </dependency>
+      <dependency>
+         <groupId>com.jcraft</groupId>
+         <artifactId>jsch</artifactId>
+         <version>0.1.54</version>
+      </dependency>
+      <dependency>
+         <groupId>io.github.bonigarcia</groupId>
+         <artifactId>webdrivermanager</artifactId>
+         <version>3.3.0</version>
+      </dependency>
+   </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
-                <configuration>
-                    <source>17</source>
-                    <encoding>UTF-8</encoding>
-                    <doclint>none</doclint> <!-- Avoids strict linting errors -->
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.11.0.3922</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <!-- Use version '3.5.1' with the Azure pipeline when it is
+   <build>
+      <plugins>
+<!--         <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--            <version>3.6.3</version>-->
+<!--            <configuration>-->
+<!--               <source>21</source>-->
+<!--               <encoding>UTF-8</encoding>-->
+<!--               <doclint>none</doclint>  Avoids strict linting errors -->
+<!--            </configuration>-->
+<!--            <executions>-->
+<!--               <execution>-->
+<!--                  <id>attach-javadocs</id>-->
+<!--                  <goals>-->
+<!--                     <goal>jar</goal>-->
+<!--                  </goals>-->
+<!--               </execution>-->
+<!--            </executions>-->
+<!--         </plugin>-->
+         <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.11.0.3922</version>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <!-- Use version '3.5.1' with the Azure pipeline when it is
             configured to support Java v10.                                               -->
-                <!-- Version '3.8.1' will work with Java v17 but it doesn't
+            <!-- Version '3.8.1' will work with Java v17 but it doesn't
             support the new configuration option '<release>17</release>' it
             is suspected. -->
-                <version>3.11.0</version>
-                <configuration>
+            <version>3.11.0</version>
+            <configuration>
 
-                    <!-- The following source and target values should be
+               <!-- The following source and target values should be
                changed (source/target = 1.10) when using Java v10. -->
-                    <!-- NB: (source / target values = "15") for JRE v15
+               <!-- NB: (source / target values = "15") for JRE v15
                support.                                             -->
-                    <!-- <source>17</source> -->
-                    <!-- <target>17</target> -->
-                    <!-- <fork>true</fork> -->
-                    <!-- This is thought to be the preferred option when working
+               <!-- <source>17</source> -->
+               <!-- <target>17</target> -->
+               <!-- <fork>true</fork> -->
+               <!-- This is thought to be the preferred option when working
                with Java v17. -->
-                    <release>21</release>
+               <release>21</release>
 
-                    <!-- This is to fix bitbucket pipeline build error due to
+               <!-- This is to fix bitbucket pipeline build error due to
                Lombok processing                                                                   -->
-                    <!-- For instance:
-                    https://stackoverflow.com/questions/66790818/java-build-has-started-failing-fatal-error-compiling-java-lang-illegalaccesse -->
-                    <compilerArgs>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
-                        <arg>
-                            -J--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED</arg>
-                    </compilerArgs>
+               <!-- For instance:
+               https://stackoverflow.com/questions/66790818/java-build-has-started-failing-fatal-error-compiling-java-lang-illegalaccesse -->
+               <compilerArgs>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                  <arg>
+                     -J--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED</arg>
+               </compilerArgs>
 
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.24</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
+               <annotationProcessorPaths>
+                  <path>
+                     <groupId>org.projectlombok</groupId>
+                     <artifactId>lombok</artifactId>
+                     <version>1.18.24</version>
+                  </path>
+               </annotationProcessorPaths>
+            </configuration>
+         </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.1.2</version>
+            <configuration>
+               <skipTests>true</skipTests>
+            </configuration>
+         </plugin>
+      </plugins>
 
-    <profiles>
-        <profile>
-            <id>cucumber</id>
-            <activation>
-                <property>
-                    <name>cucumber.filter.tags</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.1.2</version>
-                        <configuration>
-                            <suiteXmlFiles />
-                            <excludes>
-                                <exclude>**.testng.xml</exclude>
-                                <exclude>**/XmlCucumberRunnerSuite*.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+      <resources>
+         <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+               <include>extent.properties</include>
+            </includes>
+         </resource>
+      </resources>
+   </build>
+
+   <profiles>
+      <profile>
+         <id>cucumber</id>
+         <activation>
+            <property>
+               <name>cucumber.filter.tags</name>
+            </property>
+         </activation>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-surefire-plugin</artifactId>
+                  <version>3.1.2</version>
+                  <configuration>
+                     <suiteXmlFiles />
+                     <excludes>
+                        <exclude>**.testng.xml</exclude>
+                        <exclude>**/XmlCucumberRunnerSuite*.java</exclude>
+                     </excludes>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
 </project>
