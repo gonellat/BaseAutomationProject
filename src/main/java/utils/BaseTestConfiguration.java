@@ -416,6 +416,7 @@ public class BaseTestConfiguration {
     */
    public static void setRunDateTime() {
       runDateTime = DateUtils.getCurrentDateTime(DateTimeFormatConstants.YYYYMMDDHHMMSS);
+      System.setProperty("current.date.time", runDateTime);
    }
 
    /**
